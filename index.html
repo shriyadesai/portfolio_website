@@ -783,6 +783,69 @@
       .bookmark { right: 44px; }
       .portrait-frame { width: 180px; height: 220px; }
     }
+    .projects-list {
+  max-width: 100%;
+  margin: 0;
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px dotted var(--rule);
+  align-items: start;
+}
+
+.project-card:last-child { border-bottom: none; }
+
+.project-image {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+
+.project-content {
+  padding-top: 4px;
+}
+
+.project-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 26px;
+  color: var(--burgundy);
+  font-weight: 500;
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.project-role {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.project-blurb {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .project-card {
+    grid-template-columns: 100px 1fr;
+    gap: 14px;
+  }
+  .project-image { width: 100px; height: 100px; }
+  .project-name { font-size: 22px; }
+}
   </style>
 </head>
 <body>
@@ -925,52 +988,54 @@
             <p class="chapter-subtitle">small expeditions, mostly completed</p>
           </header>
 
-          <div>
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">i.</span>
-                <span class="tale-title">The Retrieval Dreams</span>
-              </div>
-              <p class="tale-description">A small system, built over several weekends, that tried to find things before they were quite lost. An experiment in retrieval-based tools and the particular joy of a good search result.</p>
-              <p class="tale-tag">— retrieval · python · quiet weekends</p>
-            </div>
+          <div class="projects-list">
 
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">ii.</span>
-                <span class="tale-title">The Grant Hunt</span>
-              </div>
-              <p class="tale-description">An expedition, mapped carefully across many spreadsheets, into the unlikely wildernesses of community arts funding. Conducted on behalf of a theatre in a small New Hampshire town.</p>
-              <p class="tale-tag">— research · community · pro bono</p>
-            </div>
+  <div class="project-card">
+    <img src="images/emrld_medical_medal.svg" alt="EMRLD" class="project-image"/>
+    <div class="project-content">
+      <div class="project-role">Product manager & student consultant</div>
+      <h3 class="project-name">EMRLD</h3>
+      <p class="project-blurb">A medical education platform, stuck at a fork: build or buy? She weighed five vendors against a framework of her own making, chose well, and cut projected development costs by nearly three-quarters — all while keeping the platform extensible for whatever came next.</p>
+    </div>
+  </div>
 
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">iii.</span>
-                <span class="tale-title">Tea &amp; Tradeoffs</span>
-              </div>
-              <p class="tale-description">An ongoing investigation into the small, quiet decisions that make products feel considered. Product thinking as practice, not performance.</p>
-              <p class="tale-tag">— product · writing · ongoing</p>
-            </div>
+  <div class="project-card">
+    <img src="images/stride-on-parchment.svg" alt="Stride" class="project-image"/>
+    <div class="project-content">
+      <div class="project-role">Founder & product manager · top 30 of 625 nationally</div>
+      <h3 class="project-name">Stride</h3>
+      <p class="project-blurb">Students on one side. Freshly-funded startups on the other. No good way to find each other. She built the bridge — an NLP-driven matching engine for jobs and interview prep — and talked to a thousand people along the way.</p>
+    </div>
+  </div>
 
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">iv.</span>
-                <span class="tale-title">The Preceptor's Toolkit</span>
-              </div>
-              <p class="tale-description">Teaching materials prepared for seminars on innovation and organizational culture. Discussion guides, cold-call prompts, and the occasional hand-drawn diagram.</p>
-              <p class="tale-tag">— facilitation · teaching · design</p>
-            </div>
+  <div class="project-card">
+    <img src="images/pawsible-dog.svg" alt="Pawsible" class="project-image"/>
+    <div class="project-content">
+      <div class="project-role">Innovation hackathon · 2nd place</div>
+      <h3 class="project-name">Pawsible</h3>
+      <p class="project-blurb">A stray, picked up off the street. A shelter, a vet visit, a unique ID. Then an AI agent quietly matching the animal with the right home, for keeps. End-to-end — for the adopter, the shelter, and the volunteer who connects them.</p>
+    </div>
+  </div>
 
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">v.</span>
-                <span class="tale-title">Circuits &amp; Civility</span>
-              </div>
-              <p class="tale-description">A hardware project from her electrical engineering days. Still on the shelf. Still, occasionally, beeping.</p>
-              <p class="tale-tag">— hardware · nostalgia · unfinished</p>
-            </div>
-          </div>
+  <div class="project-card">
+    <img src="images/lift_system_ship.svg" alt="Synchronous Multi-Motor Lift System" class="project-image"/>
+    <div class="project-content">
+      <div class="project-role">IEEE published</div>
+      <h3 class="project-name">Multi-motor lift system</h3>
+      <p class="project-blurb">Four motors, one coordinated lift. The architecture had to keep them in perfect sync — and it did, across thirty test cycles, while trimming 12% off the build cost.</p>
+    </div>
+  </div>
+
+  <div class="project-card">
+    <img src="images/syllabit-on-parchment.svg" alt="Syllabit" class="project-image"/>
+    <div class="project-content">
+      <div class="project-role">Product management hackathon · 1st place</div>
+      <h3 class="project-name">Syllabit</h3>
+      <p class="project-blurb">University is built around one kind of attention. Syllabit is for everyone else — an AI-tuned learning platform that reshapes a syllabus around the way an ADHD mind actually works. Paced, navigable, actually doable.</p>
+    </div>
+  </div>
+
+</div>
 
           <div class="chapter-nav">
             <button class="chapter-nav-link" data-goto="about">
