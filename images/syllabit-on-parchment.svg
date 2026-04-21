@@ -1,0 +1,103 @@
+<svg width="680" height="500" viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg">
+  <title>Syllabit — sketched logo on parchment</title>
+
+  <defs>
+    <pattern id="paper-syl" patternUnits="userSpaceOnUse" width="14" height="14">
+      <circle cx="7" cy="7" r="0.6" fill="#B8864B" opacity="0.2"/>
+    </pattern>
+    <pattern id="syl-ink-light" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#2A2A2A" stroke-width="0.6" opacity="0.5"/>
+    </pattern>
+    <pattern id="syl-ink-med" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#2A2A2A" stroke-width="0.9"/>
+    </pattern>
+    <pattern id="syl-ink-dense" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="4" stroke="#2A2A2A" stroke-width="1"/>
+    </pattern>
+    <pattern id="syl-ink-word" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#2A2A2A" stroke-width="0.8"/>
+    </pattern>
+
+    <filter id="syl-wobble-grid" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.8"/>
+    </filter>
+
+    <filter id="syl-wobble-word" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="3"/>
+      <feDisplacementMap in="SourceGraphic" scale="2"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="680" height="500" fill="#F0E3C4"/>
+  <rect x="0" y="0" width="680" height="500" fill="url(#paper-syl)"/>
+
+  <rect x="40" y="40" width="600" height="420" fill="#F5E9CC" stroke="#8B4B2F" stroke-width="2"/>
+  <rect x="46" y="46" width="588" height="408" fill="none" stroke="#8B4B2F" stroke-width="0.8"/>
+
+  <path d="M 46 46 Q 130 58, 200 74 Q 150 110, 90 130 Q 46 138, 46 108 Z" fill="#E8A8B0" opacity="0.55"/>
+  <path d="M 634 46 Q 550 58, 480 74 Q 530 110, 590 130 Q 634 138, 634 108 Z" fill="#E8A8B0" opacity="0.55"/>
+  <path d="M 100 85 Q 108 80, 116 85 Q 124 80, 132 85 Q 140 80, 148 85 Q 156 80, 164 85" stroke="#B56776" stroke-width="1" fill="none" opacity="0.65"/>
+  <path d="M 516 85 Q 524 80, 532 85 Q 540 80, 548 85 Q 556 80, 564 85 Q 572 80, 580 85" stroke="#B56776" stroke-width="1" fill="none" opacity="0.65"/>
+
+  <path d="M 46 56 L 58 46" stroke="#8B4B2F" stroke-width="0.8"/>
+  <path d="M 634 56 L 622 46" stroke="#8B4B2F" stroke-width="0.8"/>
+  <path d="M 46 444 L 58 454" stroke="#8B4B2F" stroke-width="0.8"/>
+  <path d="M 634 444 L 622 454" stroke="#8B4B2F" stroke-width="0.8"/>
+
+  <path d="M 70 420 Q 82 412, 92 420 Q 88 428, 80 430 Q 72 428, 70 420 Z" fill="#8FA872" opacity="0.7"/>
+  <line x1="72" y1="422" x2="88" y2="425" stroke="#6A8056" stroke-width="0.5"/>
+  <path d="M 610 420 Q 598 412, 588 420 Q 592 428, 600 430 Q 608 428, 610 420 Z" fill="#8FA872" opacity="0.7"/>
+  <line x1="608" y1="422" x2="592" y2="425" stroke="#6A8056" stroke-width="0.5"/>
+
+  <ellipse cx="340" cy="260" rx="200" ry="140" fill="#FAEAC5" opacity="0.5"/>
+
+  <g filter="url(#syl-wobble-grid)" transform="translate(110, 145) scale(0.5)">
+    <rect x="144" y="72" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="72" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="72" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+
+    <rect x="100" y="116" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="144" y="116" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="116" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="116" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="276" y="116" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+
+    <rect x="56" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="100" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="144" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="276" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="320" y="160" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+
+    <rect x="56" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="100" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="144" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="276" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="320" y="204" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+
+    <rect x="100" y="248" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="144" y="248" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="248" width="36" height="36" rx="4" fill="url(#syl-ink-dense)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="248" width="36" height="36" rx="4" fill="url(#syl-ink-med)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="276" y="248" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+
+    <rect x="144" y="292" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="188" y="292" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+    <rect x="232" y="292" width="36" height="36" rx="4" fill="url(#syl-ink-light)" stroke="#2A2A2A" stroke-width="2.5"/>
+  </g>
+
+  <g filter="url(#syl-wobble-word)">
+    <text x="305" y="285" text-anchor="start" font-family="Nunito, system-ui, sans-serif" font-size="78" font-weight="900" fill="url(#syl-ink-word)" letter-spacing="-1">Syllabit</text>
+  </g>
+  <g filter="url(#syl-wobble-word)">
+    <text x="305" y="285" text-anchor="start" font-family="Nunito, system-ui, sans-serif" font-size="78" font-weight="900" fill="none" stroke="#2A2A2A" stroke-width="2.5" letter-spacing="-1">Syllabit</text>
+  </g>
+
+  <g filter="url(#syl-wobble-word)">
+    <text x="305" y="318" text-anchor="start" font-family="Nunito, system-ui, sans-serif" font-size="15" font-weight="700" fill="#5D3A1E" letter-spacing="0.5">divide the syllabus. conquer the semester.</text>
+  </g>
+</svg>
