@@ -30,93 +30,120 @@
       background-image: radial-gradient(ellipse at top, #2E2818 0%, #1F1A10 70%);
       color: var(--ink);
       min-height: 100vh;
-      padding: 32px 16px 64px;
+      padding: 40px 24px 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Book container */
     .book {
       width: 100%;
-      max-width: 720px;
-      perspective: 2400px;
+      max-width: 1240px;
+      perspective: 3000px;
       perspective-origin: 50% 40%;
     }
 
-    .page-container {
+    .book-stage {
       position: relative;
-      min-height: 900px;
+      min-height: 860px;
       transform-style: preserve-3d;
     }
 
+    .spread {
+      display: none;
+      width: 100%;
+      position: relative;
+      transform-origin: center center;
+      backface-visibility: hidden;
+    }
+
+    .spread.active {
+      display: flex;
+      animation: spreadIn 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .spread.flipping-out {
+      display: flex;
+      animation: spreadOut 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+
+    @keyframes spreadIn {
+      0% { transform: rotateY(-90deg) scale(0.96); opacity: 0; }
+      40% { opacity: 0.4; }
+      100% { transform: rotateY(0) scale(1); opacity: 1; }
+    }
+
+    @keyframes spreadOut {
+      0% { transform: rotateY(0) scale(1); opacity: 1; }
+      60% { opacity: 0.3; }
+      100% { transform: rotateY(90deg) scale(0.96); opacity: 0; }
+    }
+
     .page {
+      flex: 1;
+      min-width: 0;
       background: var(--paper);
       background-image:
         radial-gradient(ellipse at 15% 20%, rgba(139, 122, 85, 0.08) 0%, transparent 50%),
         radial-gradient(ellipse at 85% 80%, rgba(139, 122, 85, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.12) 0%, transparent 60%);
+        radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.10) 0%, transparent 60%);
       color: var(--ink);
-      padding: 72px 72px 72px;
-      box-shadow:
-        0 2px 0 var(--paper-edge),
-        0 4px 0 rgba(139, 122, 85, 0.4),
-        0 40px 80px -30px rgba(0, 0, 0, 0.6),
-        0 60px 120px -60px rgba(0, 0, 0, 0.4);
-      border-radius: 2px;
-      min-height: 900px;
+      padding: 72px 60px 80px;
+      min-height: 860px;
       position: relative;
-      transform-origin: left center;
-      backface-visibility: hidden;
-      display: none;
+      overflow: hidden;
     }
 
-    .page.active {
-      display: block;
-      animation: pageFlipIn 0.75s cubic-bezier(0.65, 0, 0.35, 1);
+    .page-left {
+      border-radius: 4px 0 0 4px;
+      box-shadow:
+        inset -30px 0 60px -35px rgba(62, 46, 20, 0.45),
+        -2px 2px 0 rgba(139, 122, 85, 0.35),
+        -40px 40px 80px -30px rgba(0, 0, 0, 0.55),
+        -20px 60px 120px -60px rgba(0, 0, 0, 0.4);
     }
 
-    .page.flipping-out {
-      display: block;
-      animation: pageFlipOut 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    .page-right {
+      border-radius: 0 4px 4px 0;
+      box-shadow:
+        inset 30px 0 60px -35px rgba(62, 46, 20, 0.45),
+        2px 2px 0 rgba(139, 122, 85, 0.35),
+        40px 40px 80px -30px rgba(0, 0, 0, 0.55),
+        20px 60px 120px -60px rgba(0, 0, 0, 0.4);
     }
 
-    @keyframes pageFlipIn {
-      0% { transform: rotateY(-100deg); opacity: 0; }
-      40% { opacity: 0.4; }
-      100% { transform: rotateY(0); opacity: 1; }
-    }
-
-    @keyframes pageFlipOut {
-      0% { transform: rotateY(0); opacity: 1; }
-      60% { opacity: 0.3; }
-      100% { transform: rotateY(100deg); opacity: 0; }
-    }
-
-    /* Right-edge deckled shadow */
-    .page::before {
+    .spread::before {
       content: '';
       position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 8px;
-      background: linear-gradient(to right, transparent, rgba(139, 122, 85, 0.18));
+      left: 50%;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: rgba(62, 46, 20, 0.25);
+      z-index: 2;
       pointer-events: none;
     }
 
-    /* Bookmark ribbon */
     .bookmark {
       position: absolute;
       top: 0;
-      right: 72px;
+      right: 80px;
       width: 18px;
-      height: 64px;
+      height: 70px;
       background: var(--burgundy);
       clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
       opacity: 0.9;
+      z-index: 3;
     }
 
-    /* ========== TITLE PAGE / TOC ========== */
-    .title-page { text-align: center; }
+    .cover-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 60px;
+    }
 
     .top-ornament {
       color: var(--gold);
@@ -130,7 +157,7 @@
       letter-spacing: 5px;
       color: var(--gold);
       font-weight: 500;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       text-transform: uppercase;
     }
 
@@ -138,16 +165,16 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
-      font-size: clamp(44px, 7vw, 64px);
-      line-height: 1.05;
+      font-size: clamp(48px, 5.5vw, 72px);
+      line-height: 1;
       color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       letter-spacing: -0.5px;
     }
 
     .book-title .small {
       display: block;
-      font-size: 0.44em;
+      font-size: 0.36em;
       font-style: italic;
       color: var(--ink-soft);
       margin-bottom: 0.2em;
@@ -161,13 +188,90 @@
       font-style: italic;
       font-size: 18px;
       color: var(--ink-soft);
-      margin-top: 24px;
+      margin-top: 28px;
+      max-width: 340px;
     }
 
     .middle-divider {
-      margin: 48px auto 32px;
+      margin: 44px auto 32px;
       color: var(--gold);
       font-size: 16px;
+    }
+
+    .author-line {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--ink);
+      font-weight: 400;
+      margin-top: 12px;
+    }
+
+    .bottom-ornament {
+      margin-top: 48px;
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .chapter-mark-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .chapter-mark-eyebrow {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .chapter-mark-numeral {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(120px, 18vw, 200px);
+      line-height: 0.85;
+      color: var(--burgundy);
+      font-weight: 500;
+      margin-bottom: 32px;
+    }
+
+    .chapter-mark-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(28px, 3vw, 40px);
+      color: var(--ink);
+      line-height: 1.15;
+      max-width: 80%;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .chapter-mark-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--rule);
+      margin: 16px auto;
+    }
+
+    .chapter-mark-epigraph {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-soft);
+      max-width: 280px;
+      line-height: 1.65;
+      margin-top: 8px;
+    }
+
+    .decoration {
+      margin-top: 40px;
+      opacity: 0.75;
     }
 
     .toc-label {
@@ -176,18 +280,37 @@
       color: var(--gold);
       margin-bottom: 28px;
       font-weight: 500;
+      text-align: center;
+    }
+
+    .toc-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 36px;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .toc-sub {
+      text-align: center;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-bottom: 40px;
     }
 
     .toc {
-      max-width: 480px;
+      max-width: 440px;
       margin: 0 auto;
-      text-align: left;
     }
 
     .toc-item {
       display: flex;
       align-items: baseline;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
       cursor: pointer;
       padding: 4px 0;
     }
@@ -199,7 +322,7 @@
     .toc-numeral {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 18px;
+      font-size: 19px;
       width: 40px;
       color: var(--ink);
       flex-shrink: 0;
@@ -227,24 +350,18 @@
       color: var(--ink-soft);
     }
 
-    .bottom-ornament {
-      margin-top: 48px;
-      color: var(--gold);
-      font-size: 16px;
-    }
-
     .turn-page-hint {
-      margin-top: 24px;
+      margin-top: 48px;
       font-size: 11px;
       letter-spacing: 4px;
       color: var(--gold);
       font-weight: 500;
+      text-align: center;
     }
 
-    /* ========== CHAPTER PAGES ========== */
     .chapter-header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       padding-bottom: 24px;
       border-bottom: 1px solid var(--rule);
       position: relative;
@@ -266,7 +383,7 @@
       font-size: 11px;
       letter-spacing: 5px;
       color: var(--gold);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       font-weight: 500;
       text-transform: uppercase;
     }
@@ -275,16 +392,16 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
-      font-size: clamp(36px, 5vw, 48px);
+      font-size: clamp(30px, 3vw, 42px);
       line-height: 1.1;
       color: var(--ink);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .chapter-subtitle {
       font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--ink-soft);
     }
 
@@ -293,13 +410,10 @@
       font-size: 17px;
       line-height: 1.8;
       color: var(--ink);
-      max-width: 560px;
-      margin: 0 auto;
     }
 
-    .chapter-body p { margin-bottom: 20px; }
+    .chapter-body p { margin-bottom: 18px; }
 
-    /* Drop cap */
     .drop-cap::first-letter {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
@@ -311,19 +425,13 @@
       color: var(--burgundy);
     }
 
-    /* ==== Project / tale entries ==== */
-    .tale-entry {
-      margin-bottom: 30px;
-      max-width: 560px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    .tale-entry { margin-bottom: 26px; }
 
     .tale-header {
       display: flex;
       align-items: baseline;
       gap: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .tale-number {
@@ -343,10 +451,10 @@
     }
 
     .tale-description {
-      font-size: 16px;
-      line-height: 1.7;
+      font-size: 15.5px;
+      line-height: 1.65;
       color: var(--ink);
-      padding-left: 36px;
+      padding-left: 32px;
     }
 
     .tale-tag {
@@ -354,20 +462,14 @@
       color: var(--ink-faint);
       font-style: italic;
       margin-top: 4px;
-      padding-left: 36px;
-    }
-
-    /* ==== Timeline / career ==== */
-    .timeline {
-      max-width: 560px;
-      margin: 0 auto;
+      padding-left: 32px;
     }
 
     .timeline-entry {
-      margin-bottom: 26px;
+      margin-bottom: 24px;
       display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 18px;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
       align-items: baseline;
     }
 
@@ -375,31 +477,25 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       color: var(--gold);
-      font-size: 15px;
+      font-size: 14px;
       text-align: right;
       border-right: 1px solid var(--rule);
-      padding-right: 18px;
+      padding-right: 16px;
     }
 
     .timeline-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 20px;
+      font-size: 19px;
       color: var(--ink);
       font-weight: 500;
       margin-bottom: 4px;
     }
 
     .timeline-description {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--ink-soft);
-      line-height: 1.65;
-    }
-
-    /* ==== Writings list ==== */
-    .writings {
-      max-width: 560px;
-      margin: 0 auto;
+      line-height: 1.6;
     }
 
     .writing-entry {
@@ -421,51 +517,48 @@
     .writing-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 22px;
+      font-size: 21px;
       color: var(--ink);
       margin-bottom: 6px;
       font-weight: 500;
     }
 
     .writing-excerpt {
-      font-size: 15px;
+      font-size: 14.5px;
       line-height: 1.65;
       color: var(--ink-soft);
       font-style: italic;
     }
 
-    /* ==== Letter ==== */
     .letter {
       font-family: 'EB Garamond', serif;
-      font-size: 17px;
+      font-size: 16.5px;
       line-height: 1.85;
-      max-width: 560px;
-      margin: 0 auto;
     }
 
     .letter-salutation {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-size: 26px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       color: var(--ink);
     }
 
-    .letter p { margin-bottom: 18px; }
+    .letter p { margin-bottom: 16px; }
 
     .correspondence {
-      margin: 36px 0 32px;
-      padding: 24px 0;
+      margin: 28px 0 24px;
+      padding: 20px 0;
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
     }
 
     .correspondence-item {
       display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 16px;
-      margin-bottom: 10px;
-      font-size: 16px;
+      grid-template-columns: 170px 1fr;
+      gap: 14px;
+      margin-bottom: 8px;
+      font-size: 15px;
       align-items: baseline;
     }
 
@@ -473,10 +566,6 @@
       font-style: italic;
       color: var(--ink-soft);
       text-align: right;
-    }
-
-    .correspondence-value {
-      color: var(--burgundy);
     }
 
     .correspondence-value a {
@@ -490,8 +579,8 @@
     .letter-sign-off {
       font-family: 'EB Garamond', serif;
       font-style: italic;
-      margin-top: 24px;
-      margin-bottom: 8px;
+      margin-top: 20px;
+      margin-bottom: 4px;
     }
 
     .signature {
@@ -503,14 +592,13 @@
       margin-top: 6px;
     }
 
-    /* ==== Portrait frame (About) ==== */
     .portrait-frame {
-      width: 180px;
-      height: 220px;
-      margin: 0 auto 32px;
+      width: 220px;
+      height: 270px;
+      margin: 0 auto 20px;
       background: var(--paper-2);
       border: 1px solid var(--rule);
-      padding: 10px;
+      padding: 12px;
       box-shadow: 0 2px 0 rgba(139, 122, 85, 0.25);
     }
 
@@ -529,7 +617,14 @@
       letter-spacing: 2px;
     }
 
-    /* ==== Page-level navigation ==== */
+    .portrait-caption {
+      text-align: center;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+
     .page-nav {
       position: absolute;
       top: 32px;
@@ -547,16 +642,16 @@
       border: none;
       font-weight: 500;
       transition: color 0.3s ease;
+      z-index: 4;
     }
 
     .page-nav:hover { color: var(--burgundy); }
 
-    /* Running footer */
     .page-footer {
       position: absolute;
-      bottom: 32px;
-      left: 72px;
-      right: 72px;
+      bottom: 28px;
+      left: 60px;
+      right: 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -576,20 +671,16 @@
       text-transform: none;
     }
 
-    /* Next/prev chapter nav */
     .chapter-nav {
-      margin-top: 48px;
-      padding-top: 28px;
+      margin-top: 36px;
+      padding-top: 24px;
       border-top: 1px solid var(--rule);
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: 15px;
-      max-width: 560px;
-      margin-left: auto;
-      margin-right: auto;
+      font-size: 14px;
     }
 
     .chapter-nav-link {
@@ -619,462 +710,600 @@
       margin-bottom: 4px;
     }
 
-    /* Mobile */
-    @media (max-width: 640px) {
-      body { padding: 16px 8px 40px; }
-      .page { padding: 56px 28px 72px; min-height: 700px; }
-      .page-container { min-height: 700px; }
-      .toc { max-width: 100%; }
-      .page-nav { top: 20px; left: 20px; }
-      .page-footer { left: 28px; right: 28px; bottom: 20px; }
-      .chapter-header { margin-bottom: 28px; }
+    .book-caption {
+      text-align: center;
+      color: var(--ink-faint);
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      margin-top: 28px;
+      letter-spacing: 0.5px;
+    }
+
+    .book-caption kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      font-family: 'EB Garamond', serif;
+      font-style: normal;
+      font-size: 12px;
+      color: rgba(213, 196, 148, 0.9);
+      margin: 0 3px;
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 20px 12px 40px; }
+      .book { max-width: 640px; }
+      .book-stage { min-height: auto; }
+      .spread { flex-direction: column; }
+      .page { min-height: auto; padding: 56px 32px 72px; }
+
+      .page-left {
+        border-radius: 4px 4px 0 0;
+        box-shadow:
+          inset 0 -30px 50px -30px rgba(62, 46, 20, 0.3),
+          0 -2px 0 rgba(139, 122, 85, 0.2),
+          0 -40px 80px -30px rgba(0, 0, 0, 0.5);
+      }
+
+      .page-right {
+        border-radius: 0 0 4px 4px;
+        box-shadow:
+          inset 0 30px 50px -30px rgba(62, 46, 20, 0.3),
+          0 2px 0 rgba(139, 122, 85, 0.2),
+          0 40px 80px -30px rgba(0, 0, 0, 0.5);
+      }
+
+      .spread::before {
+        left: 8px;
+        right: 8px;
+        top: 50%;
+        bottom: auto;
+        width: auto;
+        height: 1px;
+      }
+
+      .cover-left, .chapter-mark-page { padding: 48px 32px; }
+      .chapter-mark-numeral { font-size: 96px; margin-bottom: 20px; }
+      .chapter-mark-title { font-size: 28px; }
       .timeline-entry { grid-template-columns: 1fr; gap: 4px; }
-      .timeline-marker { text-align: left; border-right: none; padding-right: 0; border-left: 2px solid var(--rule); padding-left: 12px; }
+      .timeline-marker {
+        text-align: left;
+        border-right: none;
+        padding-right: 0;
+        border-left: 2px solid var(--rule);
+        padding-left: 12px;
+      }
       .correspondence-item { grid-template-columns: 1fr; gap: 2px; }
       .correspondence-label { text-align: left; }
       .tale-description, .tale-tag { padding-left: 0; }
-      .bookmark { right: 40px; }
+      .page-nav { top: 20px; left: 20px; }
+      .page-footer { left: 32px; right: 32px; bottom: 20px; }
+      .bookmark { right: 44px; }
+      .portrait-frame { width: 180px; height: 220px; }
     }
   </style>
 </head>
 <body>
 
   <div class="book">
-    <div class="page-container">
+    <div class="book-stage">
 
-      <!-- ========== I. TITLE PAGE / TOC ========== -->
-      <article class="page active title-page" data-page="toc">
-        <div class="bookmark"></div>
+      <section class="spread active" data-page="toc">
+        <article class="page page-left cover-left">
+          <div class="top-ornament">❦ ❦ ❦</div>
+          <div class="volume-label">A portfolio in six parts</div>
+          <h1 class="book-title">
+            <span class="small">the tales of</span>
+            Shriya
+          </h1>
+          <p class="book-subtitle">a collection of works, wonders, &amp; what-ifs</p>
+          <div class="middle-divider">⸺ ❦ ⸺</div>
+          <div class="author-line">written &amp; illustrated by the author</div>
+          <div class="bottom-ornament">⸺ ✦ ⸺</div>
+        </article>
 
-        <div class="top-ornament">❦ ❦ ❦</div>
-        <div class="volume-label">A portfolio in six parts</div>
+        <article class="page page-right">
+          <div class="bookmark"></div>
+          <div class="toc-label">TABLE OF CONTENTS</div>
+          <h2 class="toc-heading">Six stories</h2>
+          <p class="toc-sub">and a letter at the end</p>
 
-        <h1 class="book-title">
-          <span class="small">the tales of</span>
-          Shriya
-        </h1>
-
-        <p class="book-subtitle">a collection of works, wonders, &amp; what-ifs</p>
-
-        <div class="middle-divider">⸺ ❦ ⸺</div>
-
-        <div class="toc-label">TABLE OF CONTENTS</div>
-
-        <nav class="toc">
-          <div class="toc-item" data-goto="about">
-            <span class="toc-numeral">I.</span>
-            <span class="toc-title">about the author</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">iii</span>
-          </div>
-          <div class="toc-item" data-goto="projects">
-            <span class="toc-numeral">II.</span>
-            <span class="toc-title">projects &amp; pet notions</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">xiv</span>
-          </div>
-          <div class="toc-item" data-goto="career">
-            <span class="toc-numeral">III.</span>
-            <span class="toc-title">chapters from a winding career</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">xxxii</span>
-          </div>
-          <div class="toc-item" data-goto="writing">
-            <span class="toc-numeral">IV.</span>
-            <span class="toc-title">musings &amp; marginalia</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">lviii</span>
-          </div>
-          <div class="toc-item" data-goto="teaching">
-            <span class="toc-numeral">V.</span>
-            <span class="toc-title">talks, teachings &amp; tea</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">lxxi</span>
-          </div>
-          <div class="toc-item" data-goto="letter">
-            <span class="toc-numeral">VI.</span>
-            <span class="toc-title">a letter to the reader</span>
-            <span class="toc-dots"></span>
-            <span class="toc-page">lxxxix</span>
-          </div>
-        </nav>
-
-        <div class="bottom-ornament">⸺ ✦ ⸺</div>
-        <div class="turn-page-hint">TURN ANY PAGE TO BEGIN</div>
-
-        <div class="page-footer">
-          <span></span>
-          <span class="page-number">i</span>
-          <span></span>
-        </div>
-      </article>
-
-      <!-- ========== II. ABOUT ========== -->
-      <article class="page" data-page="about">
-        <button class="page-nav" data-goto="toc">← Contents</button>
-
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the first</div>
-          <h2 class="chapter-title">About the author</h2>
-          <p class="chapter-subtitle">in which we make her acquaintance</p>
-        </header>
-
-        <div class="portrait-frame">
-          <div class="portrait-inner">— portrait —</div>
-        </div>
-
-        <div class="chapter-body">
-          <p class="drop-cap">Our author, by her own account, was raised on circuit diagrams and library cards in equal measure. She trained first as an electrical engineer — a discipline that taught her to respect small voltages and smaller deadlines — and has since taken a long, roundabout path toward the question of why we build the things we build.</p>
-
-          <p>These days she keeps her attention on product: how it gets shaped, who it gets shaped for, and the strange gap between what people ask for and what they actually need. She teaches, occasionally. She writes, when the weather cooperates. And she remains, at heart, a maker of things that beep, blink, or otherwise prove they exist.</p>
-
-          <p>If you would like to know more, please turn the page.</p>
-        </div>
-
-        <div class="chapter-nav">
-          <span></span>
-          <button class="chapter-nav-link next" data-goto="projects">
-            <span class="chapter-nav-label">Next</span>
-            projects &amp; pet notions →
-          </button>
-        </div>
-
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">iii</span>
-          <span>chapter i</span>
-        </div>
-      </article>
-
-      <!-- ========== III. PROJECTS ========== -->
-      <article class="page" data-page="projects">
-        <button class="page-nav" data-goto="toc">← Contents</button>
-
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the second</div>
-          <h2 class="chapter-title">Projects &amp; pet notions</h2>
-          <p class="chapter-subtitle">small expeditions, mostly completed</p>
-        </header>
-
-        <div class="chapter-body" style="margin-bottom: 32px;">
-          <p class="drop-cap">What follows is a catalogue of things the author has made, studied, or otherwise tangled with. Some were assignments, some were obsessions, and a few fell between.</p>
-        </div>
-
-        <div>
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">i.</span>
-              <span class="tale-title">The Retrieval Dreams</span>
+          <nav class="toc">
+            <div class="toc-item" data-goto="about">
+              <span class="toc-numeral">I.</span>
+              <span class="toc-title">about the author</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">iii</span>
             </div>
-            <p class="tale-description">A small system, built over several weekends, that tried to find things before they were quite lost. An experiment in retrieval-based tools and the particular joy of a good search result.</p>
-            <p class="tale-tag">— retrieval · python · quiet weekends</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">ii.</span>
-              <span class="tale-title">The Grant Hunt</span>
+            <div class="toc-item" data-goto="projects">
+              <span class="toc-numeral">II.</span>
+              <span class="toc-title">projects &amp; pet notions</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">xiv</span>
             </div>
-            <p class="tale-description">An expedition, mapped carefully across many spreadsheets, into the unlikely wildernesses of community arts funding. Conducted on behalf of a theatre in a small New Hampshire town.</p>
-            <p class="tale-tag">— research · community · pro bono</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">iii.</span>
-              <span class="tale-title">Tea &amp; Tradeoffs</span>
+            <div class="toc-item" data-goto="career">
+              <span class="toc-numeral">III.</span>
+              <span class="toc-title">a winding career</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">xxxii</span>
             </div>
-            <p class="tale-description">An ongoing investigation into the small, quiet decisions that make products feel considered. Product thinking as practice, not performance.</p>
-            <p class="tale-tag">— product · writing · ongoing</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">iv.</span>
-              <span class="tale-title">The Preceptor's Toolkit</span>
+            <div class="toc-item" data-goto="writing">
+              <span class="toc-numeral">IV.</span>
+              <span class="toc-title">musings &amp; marginalia</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">lviii</span>
             </div>
-            <p class="tale-description">Teaching materials prepared for seminars on innovation and organizational culture. Discussion guides, cold-call prompts, and the occasional hand-drawn diagram.</p>
-            <p class="tale-tag">— facilitation · teaching · design</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">v.</span>
-              <span class="tale-title">Circuits &amp; Civility</span>
+            <div class="toc-item" data-goto="teaching">
+              <span class="toc-numeral">V.</span>
+              <span class="toc-title">talks, teachings &amp; tea</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">lxxi</span>
             </div>
-            <p class="tale-description">A hardware project from her electrical engineering days. Still on the shelf. Still, occasionally, beeping.</p>
-            <p class="tale-tag">— hardware · nostalgia · unfinished</p>
+            <div class="toc-item" data-goto="letter">
+              <span class="toc-numeral">VI.</span>
+              <span class="toc-title">a letter to the reader</span>
+              <span class="toc-dots"></span>
+              <span class="toc-page">lxxxix</span>
+            </div>
+          </nav>
+
+          <div class="turn-page-hint">TURN THE PAGE TO BEGIN</div>
+
+          <div class="page-footer">
+            <span></span>
+            <span class="page-number">i</span>
+            <span></span>
           </div>
-        </div>
+        </article>
+      </section>
 
-        <div class="chapter-nav">
-          <button class="chapter-nav-link" data-goto="about">
-            <span class="chapter-nav-label">Previous</span>
-            ← about the author
-          </button>
-          <button class="chapter-nav-link next" data-goto="career">
-            <span class="chapter-nav-label">Next</span>
-            a winding career →
-          </button>
-        </div>
+      <section class="spread" data-page="about">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the first</div>
+          <div class="chapter-mark-numeral">I</div>
+          <div class="portrait-frame">
+            <div class="portrait-inner">— portrait —</div>
+          </div>
+          <p class="portrait-caption">our author, pictured</p>
+        </article>
 
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">xiv</span>
-          <span>chapter ii</span>
-        </div>
-      </article>
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the first</div>
+            <h2 class="chapter-title">About the author</h2>
+            <p class="chapter-subtitle">in which we make her acquaintance</p>
+          </header>
 
-      <!-- ========== IV. CAREER ========== -->
-      <article class="page" data-page="career">
-        <button class="page-nav" data-goto="toc">← Contents</button>
+          <div class="chapter-body">
+            <p class="drop-cap">Our author, by her own account, was raised on circuit diagrams and library cards in equal measure. She trained first as an electrical engineer — a discipline that taught her to respect small voltages and smaller deadlines — and has since taken a long, roundabout path toward the question of why we build the things we build.</p>
 
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the third</div>
-          <h2 class="chapter-title">Chapters from a winding career</h2>
-          <p class="chapter-subtitle">a roundabout, in roughly chronological order</p>
-        </header>
+            <p>These days she keeps her attention on product: how it gets shaped, who it gets shaped for, and the strange gap between what people ask for and what they actually need. She teaches, occasionally. She writes, when the weather cooperates. And she remains, at heart, a maker of things that beep, blink, or otherwise prove they exist.</p>
 
-        <div class="timeline">
-          <div class="timeline-entry">
-            <div class="timeline-marker">Chapter the first</div>
-            <div>
-              <div class="timeline-title">The undergraduate years</div>
-              <p class="timeline-description">Spent studying electrons and occasionally surprising them. A bachelor's in electrical engineering, and the beginnings of a suspicion that the best engineering problems are usually people problems.</p>
+            <p>If you would like to know more, please turn the page.</p>
+          </div>
+
+          <div class="chapter-nav">
+            <span></span>
+            <button class="chapter-nav-link next" data-goto="projects">
+              <span class="chapter-nav-label">Next</span>
+              projects &amp; pet notions →
+            </button>
+          </div>
+
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">iii</span>
+            <span>chapter i</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spread" data-page="projects">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the second</div>
+          <div class="chapter-mark-numeral">II</div>
+          <h2 class="chapter-mark-title">Projects &amp; pet notions</h2>
+          <div class="chapter-mark-rule"></div>
+          <p class="chapter-mark-epigraph">"A catalogue of small expeditions — some finished, some paused in the interesting middle."</p>
+          <div class="decoration">
+            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 25 Q 25 10, 40 25 T 70 25" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
+              <circle cx="10" cy="25" r="2.5" fill="#854F0B"/>
+              <circle cx="70" cy="25" r="2.5" fill="#854F0B"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the second</div>
+            <h2 class="chapter-title">Projects &amp; pet notions</h2>
+            <p class="chapter-subtitle">small expeditions, mostly completed</p>
+          </header>
+
+          <div>
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">i.</span>
+                <span class="tale-title">The Retrieval Dreams</span>
+              </div>
+              <p class="tale-description">A small system, built over several weekends, that tried to find things before they were quite lost. An experiment in retrieval-based tools and the particular joy of a good search result.</p>
+              <p class="tale-tag">— retrieval · python · quiet weekends</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">ii.</span>
+                <span class="tale-title">The Grant Hunt</span>
+              </div>
+              <p class="tale-description">An expedition, mapped carefully across many spreadsheets, into the unlikely wildernesses of community arts funding. Conducted on behalf of a theatre in a small New Hampshire town.</p>
+              <p class="tale-tag">— research · community · pro bono</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">iii.</span>
+                <span class="tale-title">Tea &amp; Tradeoffs</span>
+              </div>
+              <p class="tale-description">An ongoing investigation into the small, quiet decisions that make products feel considered. Product thinking as practice, not performance.</p>
+              <p class="tale-tag">— product · writing · ongoing</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">iv.</span>
+                <span class="tale-title">The Preceptor's Toolkit</span>
+              </div>
+              <p class="tale-description">Teaching materials prepared for seminars on innovation and organizational culture. Discussion guides, cold-call prompts, and the occasional hand-drawn diagram.</p>
+              <p class="tale-tag">— facilitation · teaching · design</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">v.</span>
+                <span class="tale-title">Circuits &amp; Civility</span>
+              </div>
+              <p class="tale-description">A hardware project from her electrical engineering days. Still on the shelf. Still, occasionally, beeping.</p>
+              <p class="tale-tag">— hardware · nostalgia · unfinished</p>
             </div>
           </div>
 
-          <div class="timeline-entry">
-            <div class="timeline-marker">Chapter the second</div>
-            <div>
-              <div class="timeline-title">The first proper post</div>
-              <p class="timeline-description">An early role in engineering. Brief, instructive, and full of polite meetings about impolite problems.</p>
+          <div class="chapter-nav">
+            <button class="chapter-nav-link" data-goto="about">
+              <span class="chapter-nav-label">Previous</span>
+              ← about the author
+            </button>
+            <button class="chapter-nav-link next" data-goto="career">
+              <span class="chapter-nav-label">Next</span>
+              a winding career →
+            </button>
+          </div>
+
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">xiv</span>
+            <span>chapter ii</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spread" data-page="career">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the third</div>
+          <div class="chapter-mark-numeral">III</div>
+          <h2 class="chapter-mark-title">A winding career</h2>
+          <div class="chapter-mark-rule"></div>
+          <p class="chapter-mark-epigraph">"Told roughly in order, with occasional liberties taken."</p>
+          <div class="decoration">
+            <svg width="130" height="100" viewBox="0 0 130 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20 Q 35 20, 40 50 T 70 70 T 120 85" stroke="#7A2E1D" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+              <circle cx="10" cy="20" r="3" fill="#854F0B"/>
+              <circle cx="40" cy="50" r="2.5" fill="#854F0B"/>
+              <circle cx="70" cy="70" r="2.5" fill="#854F0B"/>
+              <circle cx="120" cy="85" r="3" fill="#7A2E1D"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the third</div>
+            <h2 class="chapter-title">A winding career</h2>
+            <p class="chapter-subtitle">a roundabout, in roughly chronological order</p>
+          </header>
+
+          <div>
+            <div class="timeline-entry">
+              <div class="timeline-marker">chapter the first</div>
+              <div>
+                <div class="timeline-title">The undergraduate years</div>
+                <p class="timeline-description">A bachelor's in electrical engineering, spent studying electrons and occasionally surprising them. The beginnings of a suspicion that the best engineering problems are usually people problems.</p>
+              </div>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-marker">chapter the second</div>
+              <div>
+                <div class="timeline-title">The first proper post</div>
+                <p class="timeline-description">An early role in engineering. Brief, instructive, and full of polite meetings about impolite problems.</p>
+              </div>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-marker">chapter the third</div>
+              <div>
+                <div class="timeline-title">A deliberate turn</div>
+                <p class="timeline-description">A pivot from engineering toward product, undertaken through the DAPL program. Build-vs-buy became a more interesting question than build-vs-also-build.</p>
+              </div>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-marker">chapter the fourth</div>
+              <div>
+                <div class="timeline-title">Teaching, alongside learning</div>
+                <p class="timeline-description">Preceptor and facilitator work for seminars on innovation and organizational culture. Reading closely, and watching twenty people argue about the readings politely.</p>
+              </div>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-marker">the latest chapter</div>
+              <div>
+                <div class="timeline-title">In progress</div>
+                <p class="timeline-description">Currently seeking a product or product-marketing role where an engineer's instincts are still welcome. Watch this page.</p>
+              </div>
             </div>
           </div>
 
-          <div class="timeline-entry">
-            <div class="timeline-marker">Chapter the third</div>
-            <div>
-              <div class="timeline-title">A deliberate turn</div>
-              <p class="timeline-description">A pivot from engineering toward product, undertaken through the DAPL program. Build-vs-buy became a more interesting question than build-vs-also-build.</p>
+          <div class="chapter-nav">
+            <button class="chapter-nav-link" data-goto="projects">
+              <span class="chapter-nav-label">Previous</span>
+              ← projects &amp; pet notions
+            </button>
+            <button class="chapter-nav-link next" data-goto="writing">
+              <span class="chapter-nav-label">Next</span>
+              musings &amp; marginalia →
+            </button>
+          </div>
+
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">xxxii</span>
+            <span>chapter iii</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spread" data-page="writing">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the fourth</div>
+          <div class="chapter-mark-numeral">IV</div>
+          <h2 class="chapter-mark-title">Musings &amp; marginalia</h2>
+          <div class="chapter-mark-rule"></div>
+          <p class="chapter-mark-epigraph">"One writes, it is said, in order to find out what one thinks."</p>
+          <div class="decoration" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 96px; color: #854F0B; line-height: 1; opacity: 0.5;">"</div>
+        </article>
+
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the fourth</div>
+            <h2 class="chapter-title">Musings &amp; marginalia</h2>
+            <p class="chapter-subtitle">short essays, scribbled in the margins</p>
+          </header>
+
+          <div>
+            <div class="writing-entry">
+              <div class="writing-date">Spring 2026</div>
+              <h3 class="writing-title">On build-vs-buy, and other quiet questions</h3>
+              <p class="writing-excerpt">"The most interesting product decisions are rarely the ones that make it into the slide deck. They live in the hallways, in the half-sentence asides…"</p>
+            </div>
+
+            <div class="writing-entry">
+              <div class="writing-date">Winter 2025</div>
+              <h3 class="writing-title">What the engineer knows about products</h3>
+              <p class="writing-excerpt">"An engineer learns, early on, that the thing you wanted to build and the thing you actually built are almost never the same thing. This turns out to be a useful thing to know…"</p>
+            </div>
+
+            <div class="writing-entry">
+              <div class="writing-date">Autumn 2025</div>
+              <h3 class="writing-title">Notes from the iconoclast seminar</h3>
+              <p class="writing-excerpt">"What Berns calls an iconoclast, most teams just call a nuisance. The distinction, it turns out, is mostly about timing…"</p>
+            </div>
+
+            <div class="writing-entry">
+              <div class="writing-date">Summer 2025</div>
+              <h3 class="writing-title">The honest PM's tradeoff journal</h3>
+              <p class="writing-excerpt">"A small practice: keep a list of the things you chose not to do this week, and why. Read it back on Friday. Try not to flinch…"</p>
             </div>
           </div>
 
-          <div class="timeline-entry">
-            <div class="timeline-marker">Chapter the fourth</div>
-            <div>
-              <div class="timeline-title">Teaching, alongside learning</div>
-              <p class="timeline-description">Preceptor and facilitator work for seminars on innovation and organizational culture. Reading Schein and Berns closely, and watching twenty people argue about them gently.</p>
+          <div class="chapter-nav">
+            <button class="chapter-nav-link" data-goto="career">
+              <span class="chapter-nav-label">Previous</span>
+              ← a winding career
+            </button>
+            <button class="chapter-nav-link next" data-goto="teaching">
+              <span class="chapter-nav-label">Next</span>
+              talks &amp; teachings →
+            </button>
+          </div>
+
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">lviii</span>
+            <span>chapter iv</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spread" data-page="teaching">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the fifth</div>
+          <div class="chapter-mark-numeral">V</div>
+          <h2 class="chapter-mark-title">Talks, teachings &amp; tea</h2>
+          <div class="chapter-mark-rule"></div>
+          <p class="chapter-mark-epigraph">"Of all the ways to discover what one does not know, teaching is the most reliable."</p>
+          <div class="decoration">
+            <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="5" width="80" height="55" rx="2" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
+              <line x1="15" y1="20" x2="45" y2="20" stroke="#854F0B" stroke-width="1"/>
+              <line x1="15" y1="30" x2="65" y2="30" stroke="#854F0B" stroke-width="1"/>
+              <line x1="15" y1="40" x2="55" y2="40" stroke="#854F0B" stroke-width="1"/>
+              <line x1="15" y1="50" x2="40" y2="50" stroke="#854F0B" stroke-width="1"/>
+            </svg>
+          </div>
+        </article>
+
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the fifth</div>
+            <h2 class="chapter-title">Talks, teachings &amp; tea</h2>
+            <p class="chapter-subtitle">a brief account of seminars held</p>
+          </header>
+
+          <div class="chapter-body" style="margin-bottom: 24px;">
+            <p class="drop-cap">Teaching has always struck our author as the most reliable way to find out whether she actually understands something. A short record follows.</p>
+          </div>
+
+          <div>
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">i.</span>
+                <span class="tale-title">Iconoclasts &amp; innovation</span>
+              </div>
+              <p class="tale-description">A seminar session drawing on Gregory Berns's <em>Iconoclast</em>, with structured discussion prompts and a handful of gently-contentious questions.</p>
+              <p class="tale-tag">— seminar · facilitation · pdf</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">ii.</span>
+                <span class="tale-title">Organizational culture</span>
+              </div>
+              <p class="tale-description">A session built on Edgar Schein's <em>Organizational Culture and Leadership</em>. Cold-call prompts, a facilitation protocol, and notes on managing silences.</p>
+              <p class="tale-tag">— seminar · schein · facilitation</p>
+            </div>
+
+            <div class="tale-entry">
+              <div class="tale-header">
+                <span class="tale-number">iii.</span>
+                <span class="tale-title">Interview preparation, by request</span>
+              </div>
+              <p class="tale-description">Occasional one-on-one preparation for friends heading into product, engineering, or editorial interviews. STAR stories and the usual.</p>
+              <p class="tale-tag">— coaching · on request</p>
             </div>
           </div>
 
-          <div class="timeline-entry">
-            <div class="timeline-marker">The latest chapter</div>
-            <div>
-              <div class="timeline-title">In progress</div>
-              <p class="timeline-description">Currently seeking a product or product-marketing role where an engineer's instincts are still welcome. Watch this page.</p>
+          <div class="chapter-nav">
+            <button class="chapter-nav-link" data-goto="writing">
+              <span class="chapter-nav-label">Previous</span>
+              ← musings &amp; marginalia
+            </button>
+            <button class="chapter-nav-link next" data-goto="letter">
+              <span class="chapter-nav-label">Next</span>
+              a letter →
+            </button>
+          </div>
+
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">lxxi</span>
+            <span>chapter v</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="spread" data-page="letter">
+        <article class="page page-left chapter-mark-page">
+          <div class="chapter-mark-eyebrow">Chapter the sixth</div>
+          <div class="chapter-mark-numeral">VI</div>
+          <h2 class="chapter-mark-title">A letter to the reader</h2>
+          <div class="chapter-mark-rule"></div>
+          <p class="chapter-mark-epigraph">"A note from the author, in closing."</p>
+          <div class="decoration">
+            <svg width="110" height="80" viewBox="0 0 110 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="15" width="100" height="60" rx="1" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
+              <path d="M5 15 L55 50 L105 15" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
+              <circle cx="55" cy="50" r="10" fill="#7A2E1D" opacity="0.85"/>
+              <text x="55" y="55" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#F3E9D0" font-weight="600">S</text>
+            </svg>
+          </div>
+        </article>
+
+        <article class="page page-right">
+          <button class="page-nav" data-goto="toc">← Contents</button>
+          <header class="chapter-header">
+            <div class="chapter-eyebrow">Chapter the sixth</div>
+            <h2 class="chapter-title">A letter to the reader</h2>
+            <p class="chapter-subtitle">or: how to find the author, should you wish to</p>
+          </header>
+
+          <div class="letter">
+            <p class="letter-salutation">Dear Reader,</p>
+
+            <p>If you have turned every page and found something worth keeping — a project worth discussing, a piece of writing worth quarrelling with, a role you think might suit — I would be glad to hear from you.</p>
+
+            <p>Correspondence of any kind is welcome. I can be reached by the usual means:</p>
+
+            <div class="correspondence">
+              <div class="correspondence-item">
+                <span class="correspondence-label">by electronic post —</span>
+                <span class="correspondence-value"><a href="mailto:hello@example.com">hello@example.com</a></span>
+              </div>
+              <div class="correspondence-item">
+                <span class="correspondence-label">by professional graph —</span>
+                <span class="correspondence-value"><a href="#">linkedin.com/in/shriya</a></span>
+              </div>
+              <div class="correspondence-item">
+                <span class="correspondence-label">by published code —</span>
+                <span class="correspondence-value"><a href="#">github.com/shriyadesai</a></span>
+              </div>
+              <div class="correspondence-item">
+                <span class="correspondence-label">by occasional writing —</span>
+                <span class="correspondence-value"><a href="#">substack.com/@shriya</a></span>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="chapter-nav">
-          <button class="chapter-nav-link" data-goto="projects">
-            <span class="chapter-nav-label">Previous</span>
-            ← projects &amp; pet notions
-          </button>
-          <button class="chapter-nav-link next" data-goto="writing">
-            <span class="chapter-nav-label">Next</span>
-            musings &amp; marginalia →
-          </button>
-        </div>
-
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">xxxii</span>
-          <span>chapter iii</span>
-        </div>
-      </article>
-
-      <!-- ========== V. WRITING ========== -->
-      <article class="page" data-page="writing">
-        <button class="page-nav" data-goto="toc">← Contents</button>
-
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the fourth</div>
-          <h2 class="chapter-title">Musings &amp; marginalia</h2>
-          <p class="chapter-subtitle">short essays, scribbled in the margins</p>
-        </header>
-
-        <div class="writings">
-          <div class="writing-entry">
-            <div class="writing-date">Spring 2026</div>
-            <h3 class="writing-title">On build-vs-buy, and other quiet questions</h3>
-            <p class="writing-excerpt">"The most interesting product decisions are rarely the ones that make it into the slide deck. They live in the hallways, in the half-sentence asides…"</p>
+            <p class="letter-sign-off">Yours, in pursuit of good questions,</p>
+            <p class="signature">Shriya</p>
           </div>
 
-          <div class="writing-entry">
-            <div class="writing-date">Winter 2025</div>
-            <h3 class="writing-title">What the engineer knows about products</h3>
-            <p class="writing-excerpt">"An engineer learns, early on, that the thing you wanted to build and the thing you actually built are almost never the same thing. This turns out to be a useful thing to know…"</p>
+          <div class="chapter-nav">
+            <button class="chapter-nav-link" data-goto="teaching">
+              <span class="chapter-nav-label">Previous</span>
+              ← talks &amp; teachings
+            </button>
+            <button class="chapter-nav-link next" data-goto="toc">
+              <span class="chapter-nav-label">Return</span>
+              to the beginning →
+            </button>
           </div>
 
-          <div class="writing-entry">
-            <div class="writing-date">Autumn 2025</div>
-            <h3 class="writing-title">Notes from the iconoclast seminar</h3>
-            <p class="writing-excerpt">"What Berns calls an iconoclast, most teams just call a nuisance. The distinction, it turns out, is mostly about timing…"</p>
+          <div class="page-footer">
+            <span>the tales of shriya</span>
+            <span class="page-number">lxxxix</span>
+            <span>chapter vi · fin</span>
           </div>
-
-          <div class="writing-entry">
-            <div class="writing-date">Summer 2025</div>
-            <h3 class="writing-title">The honest PM's tradeoff journal</h3>
-            <p class="writing-excerpt">"A small practice: keep a list of the things you chose not to do this week, and why. Read it back on Friday. Try not to flinch…"</p>
-          </div>
-        </div>
-
-        <div class="chapter-nav">
-          <button class="chapter-nav-link" data-goto="career">
-            <span class="chapter-nav-label">Previous</span>
-            ← a winding career
-          </button>
-          <button class="chapter-nav-link next" data-goto="teaching">
-            <span class="chapter-nav-label">Next</span>
-            talks &amp; teachings →
-          </button>
-        </div>
-
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">lviii</span>
-          <span>chapter iv</span>
-        </div>
-      </article>
-
-      <!-- ========== VI. TEACHING ========== -->
-      <article class="page" data-page="teaching">
-        <button class="page-nav" data-goto="toc">← Contents</button>
-
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the fifth</div>
-          <h2 class="chapter-title">Talks, teachings &amp; tea</h2>
-          <p class="chapter-subtitle">a brief account of seminars held and lessons learned</p>
-        </header>
-
-        <div class="chapter-body" style="margin-bottom: 32px;">
-          <p class="drop-cap">Teaching has always struck our author as the most reliable way to find out whether she actually understands something. Below, a short record of sessions facilitated and materials prepared.</p>
-        </div>
-
-        <div>
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">i.</span>
-              <span class="tale-title">Iconoclasts &amp; innovation</span>
-            </div>
-            <p class="tale-description">A seminar session drawing on Gregory Berns's <em>Iconoclast</em>, with structured discussion prompts and a handful of gently-contentious questions. Materials distributed as a formatted guide.</p>
-            <p class="tale-tag">— seminar · facilitation guide · pdf</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">ii.</span>
-              <span class="tale-title">Organizational culture</span>
-            </div>
-            <p class="tale-description">A session built on Edgar Schein's <em>Organizational Culture and Leadership</em>. Includes cold-call prompts, a facilitation protocol, and notes on managing the inevitable silences.</p>
-            <p class="tale-tag">— seminar · schein · facilitation</p>
-          </div>
-
-          <div class="tale-entry">
-            <div class="tale-header">
-              <span class="tale-number">iii.</span>
-              <span class="tale-title">Interview preparation, by request</span>
-            </div>
-            <p class="tale-description">Occasional one-on-one preparation for friends heading into product, engineering, or editorial interviews. STAR stories, behavioural questions, the usual. Available on request.</p>
-            <p class="tale-tag">— coaching · on request · warmly</p>
-          </div>
-        </div>
-
-        <div class="chapter-nav">
-          <button class="chapter-nav-link" data-goto="writing">
-            <span class="chapter-nav-label">Previous</span>
-            ← musings &amp; marginalia
-          </button>
-          <button class="chapter-nav-link next" data-goto="letter">
-            <span class="chapter-nav-label">Next</span>
-            a letter →
-          </button>
-        </div>
-
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">lxxi</span>
-          <span>chapter v</span>
-        </div>
-      </article>
-
-      <!-- ========== VII. LETTER ========== -->
-      <article class="page" data-page="letter">
-        <button class="page-nav" data-goto="toc">← Contents</button>
-
-        <header class="chapter-header">
-          <div class="chapter-eyebrow">Chapter the sixth</div>
-          <h2 class="chapter-title">A letter to the reader</h2>
-          <p class="chapter-subtitle">or: how to find the author, should you wish to</p>
-        </header>
-
-        <div class="letter">
-          <p class="letter-salutation">Dear Reader,</p>
-
-          <p>If you have turned every page and found something worth keeping — a project worth discussing, a piece of writing worth quarrelling with, a role you think might suit — I would be glad to hear from you.</p>
-
-          <p>Correspondence of any kind, in any register, is welcome. I can be reached by the usual means:</p>
-
-          <div class="correspondence">
-            <div class="correspondence-item">
-              <span class="correspondence-label">by electronic post —</span>
-              <span class="correspondence-value"><a href="mailto:hello@example.com">hello@example.com</a></span>
-            </div>
-            <div class="correspondence-item">
-              <span class="correspondence-label">by professional graph —</span>
-              <span class="correspondence-value"><a href="#">linkedin.com/in/shriya</a></span>
-            </div>
-            <div class="correspondence-item">
-              <span class="correspondence-label">by published code —</span>
-              <span class="correspondence-value"><a href="#">github.com/shriya</a></span>
-            </div>
-            <div class="correspondence-item">
-              <span class="correspondence-label">by occasional writing —</span>
-              <span class="correspondence-value"><a href="#">substack.com/@shriya</a></span>
-            </div>
-          </div>
-
-          <p class="letter-sign-off">Yours, in pursuit of good questions,</p>
-          <p class="signature">Shriya</p>
-        </div>
-
-        <div class="chapter-nav">
-          <button class="chapter-nav-link" data-goto="teaching">
-            <span class="chapter-nav-label">Previous</span>
-            ← talks &amp; teachings
-          </button>
-          <button class="chapter-nav-link next" data-goto="toc">
-            <span class="chapter-nav-label">Return</span>
-            to the beginning →
-          </button>
-        </div>
-
-        <div class="page-footer">
-          <span>the tales of shriya</span>
-          <span class="page-number">lxxxix</span>
-          <span>chapter vi · fin</span>
-        </div>
-      </article>
+        </article>
+      </section>
 
     </div>
+
+    <p class="book-caption">
+      Click a chapter from the contents, or use <kbd>←</kbd> <kbd>→</kbd> to turn pages
+    </p>
   </div>
 
   <script>
     function goToPage(id) {
-      const current = document.querySelector('.page.active');
-      const next = document.querySelector('[data-page="' + id + '"]');
+      const current = document.querySelector('.spread.active');
+      const next = document.querySelector('.spread[data-page="' + id + '"]');
       if (!current || !next || current === next) return;
 
       current.classList.add('flipping-out');
@@ -1087,7 +1316,6 @@
       }, 500);
     }
 
-    // Wire up all navigation triggers
     document.querySelectorAll('[data-goto]').forEach(function (el) {
       el.addEventListener('click', function (e) {
         e.preventDefault();
@@ -1095,10 +1323,9 @@
       });
     });
 
-    // Keyboard navigation (left/right arrows between chapters)
     const order = ['toc', 'about', 'projects', 'career', 'writing', 'teaching', 'letter'];
     document.addEventListener('keydown', function (e) {
-      const active = document.querySelector('.page.active');
+      const active = document.querySelector('.spread.active');
       if (!active) return;
       const idx = order.indexOf(active.getAttribute('data-page'));
       if (e.key === 'ArrowRight' && idx < order.length - 1) goToPage(order[idx + 1]);
