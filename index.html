@@ -38,7 +38,7 @@
 
     .book {
       width: 100%;
-      max-width: 1240px;
+      max-width: 1400px;
       perspective: 3000px;
       perspective-origin: 50% 40%;
     }
@@ -88,7 +88,7 @@
         radial-gradient(ellipse at 85% 80%, rgba(139, 122, 85, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.10) 0%, transparent 60%);
       color: var(--ink);
-      padding: 72px 60px 80px;
+      padding: 56px 40px 72px;
       min-height: 860px;
       position: relative;
       overflow: hidden;
@@ -846,6 +846,103 @@
   .project-image { width: 100px; height: 100px; }
   .project-name { font-size: 22px; }
 }
+    .spread.full-bleed {
+  flex-direction: column;
+}
+
+.spread.full-bleed .page-full {
+  width: 100%;
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(139, 122, 85, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(139, 122, 85, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.10) 0%, transparent 60%);
+  color: var(--ink);
+  padding: 72px 80px 96px;
+  min-height: 860px;
+  position: relative;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 80px -35px rgba(62, 46, 20, 0.4),
+    0 2px 0 rgba(139, 122, 85, 0.35),
+    0 40px 80px -30px rgba(0, 0, 0, 0.55),
+    0 60px 120px -60px rgba(0, 0, 0, 0.4);
+}
+
+.spread.full-bleed::before { display: none; }
+
+.projects-list {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px dotted var(--rule);
+  align-items: center;
+}
+
+.project-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.project-card:nth-child(even) {
+  grid-template-columns: 1fr 220px;
+}
+
+.project-card:nth-child(even) .project-image-wrap {
+  order: 2;
+}
+
+.project-card:nth-child(even) .project-content {
+  order: 1;
+  text-align: right;
+}
+
+.project-image-wrap {
+  width: 220px;
+  height: 220px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 8px;
+  box-shadow: 0 2px 0 rgba(139, 122, 85, 0.25);
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.project-role {
+  font-size: 11
+
+}
+    .spread.full-bleed.active {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.spread.full-bleed.flipping-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+  
   </style>
 </head>
 <body>
@@ -964,97 +1061,93 @@
         </article>
       </section>
 
-      <section class="spread" data-page="projects">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the second</div>
-          <div class="chapter-mark-numeral">II</div>
-          <h2 class="chapter-mark-title">Projects &amp; pet notions</h2>
-          <div class="chapter-mark-rule"></div>
-          <p class="chapter-mark-epigraph">"A catalogue of small expeditions — some finished, some paused in the interesting middle."</p>
-          <div class="decoration">
-            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 25 Q 25 10, 40 25 T 70 25" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
-              <circle cx="10" cy="25" r="2.5" fill="#854F0B"/>
-              <circle cx="70" cy="25" r="2.5" fill="#854F0B"/>
-            </svg>
-          </div>
-        </article>
+      <section class="spread full-bleed" data-page="projects">
+  <article class="page page-full">
+    <button class="page-nav" data-goto="toc">← Contents</button>
 
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the second</div>
-            <h2 class="chapter-title">Projects &amp; pet notions</h2>
-            <p class="chapter-subtitle">small expeditions, mostly completed</p>
-          </header>
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter the second</div>
+      <h2 class="chapter-title">Projects &amp; pet notions</h2>
+      <p class="chapter-subtitle">small expeditions, mostly completed</p>
+    </header>
 
-          <div class="projects-list">
+    <div class="projects-list">
 
-  <div class="project-card">
-    <img src="images/emrld_medical_medal.svg" alt="EMRLD" class="project-image"/>
-    <div class="project-content">
-      <div class="project-role">Product manager & student consultant</div>
-      <h3 class="project-name">EMRLD</h3>
-      <p class="project-blurb">A medical education platform, stuck at a fork: build or buy? She weighed five vendors against a framework of her own making, chose well, and cut projected development costs by nearly three-quarters — all while keeping the platform extensible for whatever came next.</p>
+      <div class="project-card">
+        <div class="project-image-wrap">
+          <img src="images/emrld_medical_medal.svg" alt="EMRLD" class="project-image"/>
+        </div>
+        <div class="project-content">
+          <div class="project-role">Product manager &amp; student consultant</div>
+          <h3 class="project-name">EMRLD</h3>
+          <p class="project-blurb">A medical education platform, stuck at a fork: build or buy? She weighed five vendors against a framework of her own making, chose well, and cut projected development costs by nearly three-quarters — all while keeping the platform extensible for whatever came next.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image-wrap">
+          <img src="images/stride-on-parchment.svg" alt="Stride" class="project-image"/>
+        </div>
+        <div class="project-content">
+          <div class="project-role">Founder &amp; product manager · top 30 of 625 nationally</div>
+          <h3 class="project-name">Stride</h3>
+          <p class="project-blurb">Students on one side. Freshly-funded startups on the other. No good way to find each other. She built the bridge — an NLP-driven matching engine for jobs and interview prep — and talked to a thousand people along the way.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image-wrap">
+          <img src="images/pawsible-dog.svg" alt="Pawsible" class="project-image"/>
+        </div>
+        <div class="project-content">
+          <div class="project-role">Innovation hackathon · 2nd place</div>
+          <h3 class="project-name">Pawsible</h3>
+          <p class="project-blurb">A stray, picked up off the street. A shelter, a vet visit, a unique ID. Then an AI agent quietly matching the animal with the right home, for keeps. End-to-end — for the adopter, the shelter, and the volunteer who connects them.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image-wrap">
+          <img src="images/lift_system_ship.svg" alt="Multi-motor lift system" class="project-image"/>
+        </div>
+        <div class="project-content">
+          <div class="project-role">IEEE published</div>
+          <h3 class="project-name">Multi-motor lift system</h3>
+          <p class="project-blurb">Four motors, one coordinated lift. The architecture had to keep them in perfect sync — and it did, across thirty test cycles, while trimming 12% off the build cost.</p>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-image-wrap">
+          <img src="images/syllabit-on-parchment.svg" alt="Syllabit" class="project-image"/>
+        </div>
+        <div class="project-content">
+          <div class="project-role">Product management hackathon · 1st place</div>
+          <h3 class="project-name">Syllabit</h3>
+          <p class="project-blurb">University is built around one kind of attention. Syllabit is for everyone else — an AI-tuned learning platform that reshapes a syllabus around the way an ADHD mind actually works. Paced, navigable, actually doable.</p>
+        </div>
+      </div>
+
     </div>
-  </div>
 
-  <div class="project-card">
-    <img src="images/stride-on-parchment.svg" alt="Stride" class="project-image"/>
-    <div class="project-content">
-      <div class="project-role">Founder & product manager · top 30 of 625 nationally</div>
-      <h3 class="project-name">Stride</h3>
-      <p class="project-blurb">Students on one side. Freshly-funded startups on the other. No good way to find each other. She built the bridge — an NLP-driven matching engine for jobs and interview prep — and talked to a thousand people along the way.</p>
+    <div class="chapter-nav">
+      <button class="chapter-nav-link" data-goto="about">
+        <span class="chapter-nav-label">Previous</span>
+        ← about the author
+      </button>
+      <button class="chapter-nav-link next" data-goto="career">
+        <span class="chapter-nav-label">Next</span>
+        a winding career →
+      </button>
     </div>
-  </div>
 
-  <div class="project-card">
-    <img src="images/pawsible-dog.svg" alt="Pawsible" class="project-image"/>
-    <div class="project-content">
-      <div class="project-role">Innovation hackathon · 2nd place</div>
-      <h3 class="project-name">Pawsible</h3>
-      <p class="project-blurb">A stray, picked up off the street. A shelter, a vet visit, a unique ID. Then an AI agent quietly matching the animal with the right home, for keeps. End-to-end — for the adopter, the shelter, and the volunteer who connects them.</p>
+    <div class="page-footer">
+      <span>the tales of shriya</span>
+      <span class="page-number">xiv</span>
+      <span>chapter ii</span>
     </div>
-  </div>
-
-  <div class="project-card">
-    <img src="images/lift_system_ship.svg" alt="Synchronous Multi-Motor Lift System" class="project-image"/>
-    <div class="project-content">
-      <div class="project-role">IEEE published</div>
-      <h3 class="project-name">Multi-motor lift system</h3>
-      <p class="project-blurb">Four motors, one coordinated lift. The architecture had to keep them in perfect sync — and it did, across thirty test cycles, while trimming 12% off the build cost.</p>
-    </div>
-  </div>
-
-  <div class="project-card">
-    <img src="images/syllabit-on-parchment.svg" alt="Syllabit" class="project-image"/>
-    <div class="project-content">
-      <div class="project-role">Product management hackathon · 1st place</div>
-      <h3 class="project-name">Syllabit</h3>
-      <p class="project-blurb">University is built around one kind of attention. Syllabit is for everyone else — an AI-tuned learning platform that reshapes a syllabus around the way an ADHD mind actually works. Paced, navigable, actually doable.</p>
-    </div>
-  </div>
-
-</div>
-
-          <div class="chapter-nav">
-            <button class="chapter-nav-link" data-goto="about">
-              <span class="chapter-nav-label">Previous</span>
-              ← about the author
-            </button>
-            <button class="chapter-nav-link next" data-goto="career">
-              <span class="chapter-nav-label">Next</span>
-              a winding career →
-            </button>
-          </div>
-
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">xiv</span>
-            <span>chapter ii</span>
-          </div>
-        </article>
-      </section>
+  </article>
+</section>
 
       <section class="spread" data-page="career">
         <article class="page page-left chapter-mark-page">
