@@ -1,358 +1,1109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shriya Desai | Product Manager Portfolio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tales of Shriya — A Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-gradient: linear-gradient(270deg, #a18cd1, #fbc2eb, #f6d365, #fda085);
-      --text-color: #333;
-      --light-bg: #ffffffcc;
-      --dark-bg: #1a1a1a;
-      --dark-text: #eee;
+      --paper: #F3E9D0;
+      --paper-2: #EADDBA;
+      --paper-edge: #D9C890;
+      --ink: #2E2311;
+      --ink-soft: #5F4A20;
+      --ink-faint: #9F8C5F;
+      --rule: #B5A878;
+      --burgundy: #7A2E1D;
+      --gold: #854F0B;
+      --bg-dark: #1F1A10;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; }
 
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--text-color);
-      background: var(--bg-gradient);
-      background-size: 600% 600%;
-      animation: gradient 60s ease infinite;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .dark-mode {
-      background: #111;
-      color: var(--dark-text);
-    }
-
-    .dark-mode .tab-content,
-    .dark-mode .carousel-card {
-      background-color: #222;
-      color: var(--dark-text);
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 2rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    header img {
-      max-width: 300px;
-      width: 100%;
-    }
-
-    .typing-box {
-      min-height: 2.5rem;
-      font-size: 1.25rem;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .typing-box span {
-      border-right: 2px solid;
-      animation: blink 0.8s infinite;
-    }
-
-    @keyframes blink {
-      0% { border-color: transparent; }
-      50% { border-color: currentColor; }
-      100% { border-color: transparent; }
-    }
-
-    .tabs {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--bg-dark);
+      background-image: radial-gradient(ellipse at top, #2E2818 0%, #1F1A10 70%);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 32px 16px 64px;
       display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .tab-button {
-      padding: 0.6rem 1rem;
-      background: var(--light-bg);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
     }
 
-    .tab-button.active {
-      background: #4f46e5;
-      color: white;
+    /* Book container */
+    .book {
+      width: 100%;
+      max-width: 720px;
+      perspective: 2400px;
+      perspective-origin: 50% 40%;
     }
 
-    .tab-content {
+    .page-container {
+      position: relative;
+      min-height: 900px;
+      transform-style: preserve-3d;
+    }
+
+    .page {
+      background: var(--paper);
+      background-image:
+        radial-gradient(ellipse at 15% 20%, rgba(139, 122, 85, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(139, 122, 85, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.12) 0%, transparent 60%);
+      color: var(--ink);
+      padding: 72px 72px 72px;
+      box-shadow:
+        0 2px 0 var(--paper-edge),
+        0 4px 0 rgba(139, 122, 85, 0.4),
+        0 40px 80px -30px rgba(0, 0, 0, 0.6),
+        0 60px 120px -60px rgba(0, 0, 0, 0.4);
+      border-radius: 2px;
+      min-height: 900px;
+      position: relative;
+      transform-origin: left center;
+      backface-visibility: hidden;
       display: none;
-      padding: 1.5rem;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.85);
-      animation: fadeIn 0.6s ease-in;
     }
 
-    .tab-content.active {
+    .page.active {
       display: block;
+      animation: pageFlipIn 0.75s cubic-bezier(0.65, 0, 0.35, 1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .page.flipping-out {
+      display: block;
+      animation: pageFlipOut 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
     }
 
-    .carousel-wrapper {
-      margin-bottom: 3rem;
+    @keyframes pageFlipIn {
+      0% { transform: rotateY(-100deg); opacity: 0; }
+      40% { opacity: 0.4; }
+      100% { transform: rotateY(0); opacity: 1; }
     }
 
-    .carousel-title {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+    @keyframes pageFlipOut {
+      0% { transform: rotateY(0); opacity: 1; }
+      60% { opacity: 0.3; }
+      100% { transform: rotateY(100deg); opacity: 0; }
     }
 
-    .carousel-container {
+    /* Right-edge deckled shadow */
+    .page::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 8px;
+      background: linear-gradient(to right, transparent, rgba(139, 122, 85, 0.18));
+      pointer-events: none;
+    }
+
+    /* Bookmark ribbon */
+    .bookmark {
+      position: absolute;
+      top: 0;
+      right: 72px;
+      width: 18px;
+      height: 64px;
+      background: var(--burgundy);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+      opacity: 0.9;
+    }
+
+    /* ========== TITLE PAGE / TOC ========== */
+    .title-page { text-align: center; }
+
+    .top-ornament {
+      color: var(--gold);
+      letter-spacing: 10px;
+      font-size: 11px;
+      margin-bottom: 32px;
+    }
+
+    .volume-label {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .book-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(44px, 7vw, 64px);
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .book-title .small {
+      display: block;
+      font-size: 0.44em;
+      font-style: italic;
+      color: var(--ink-soft);
+      margin-bottom: 0.2em;
+      letter-spacing: 2px;
+      text-transform: lowercase;
+      font-weight: 400;
+    }
+
+    .book-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--ink-soft);
+      margin-top: 24px;
+    }
+
+    .middle-divider {
+      margin: 48px auto 32px;
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .toc-label {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    .toc {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .toc-item {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 14px;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .toc-item:hover .toc-title,
+    .toc-item:hover .toc-numeral { color: var(--burgundy); }
+    .toc-item:hover .toc-dots { border-bottom-color: var(--burgundy); }
+
+    .toc-numeral {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      width: 40px;
+      color: var(--ink);
+      flex-shrink: 0;
+      transition: color 0.3s ease;
+    }
+
+    .toc-title {
+      font-family: 'EB Garamond', serif;
+      font-size: 16px;
+      color: var(--ink);
+      transition: color 0.3s ease;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--ink-faint);
+      margin: 0 10px 5px;
+      transition: border-color 0.3s ease;
+    }
+
+    .toc-page {
+      font-family: 'EB Garamond', serif;
+      font-variant-numeric: oldstyle-nums;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+
+    .bottom-ornament {
+      margin-top: 48px;
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .turn-page-hint {
+      margin-top: 24px;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* ========== CHAPTER PAGES ========== */
+    .chapter-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--rule);
       position: relative;
     }
 
-    .carousel-card-container {
-      display: flex;
-      overflow: hidden;
-    }
-
-    .carousel-card {
-      flex: 0 0 100%;
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .carousel-card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-top: 1rem;
-    }
-
-    .arrow-button {
+    .chapter-header::after {
+      content: '✦';
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1.2rem;
-      width: 2rem;
-      height: 2rem;
+      bottom: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--paper);
+      padding: 0 14px;
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .chapter-eyebrow {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      margin-bottom: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .chapter-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(36px, 5vw, 48px);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .chapter-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-soft);
+    }
+
+    .chapter-body {
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--ink);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .chapter-body p { margin-bottom: 20px; }
+
+    /* Drop cap */
+    .drop-cap::first-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 72px;
+      line-height: 0.85;
+      float: left;
+      padding: 8px 12px 0 0;
+      color: var(--burgundy);
+    }
+
+    /* ==== Project / tale entries ==== */
+    .tale-entry {
+      margin-bottom: 30px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tale-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .tale-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .tale-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--burgundy);
+      font-weight: 500;
+    }
+
+    .tale-description {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink);
+      padding-left: 36px;
+    }
+
+    .tale-tag {
+      font-size: 12px;
+      color: var(--ink-faint);
+      font-style: italic;
+      margin-top: 4px;
+      padding-left: 36px;
+    }
+
+    /* ==== Timeline / career ==== */
+    .timeline {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .timeline-entry {
+      margin-bottom: 26px;
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 18px;
+      align-items: baseline;
+    }
+
+    .timeline-marker {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 15px;
+      text-align: right;
+      border-right: 1px solid var(--rule);
+      padding-right: 18px;
+    }
+
+    .timeline-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--ink);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .timeline-description {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* ==== Writings list ==== */
+    .writings {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .writing-entry {
+      padding: 16px 0;
+      border-bottom: 1px dotted var(--rule);
+    }
+
+    .writing-entry:last-child { border-bottom: none; }
+
+    .writing-date {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .writing-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--ink);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .writing-excerpt {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    /* ==== Letter ==== */
+    .letter {
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      line-height: 1.85;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .letter-salutation {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 26px;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .letter p { margin-bottom: 18px; }
+
+    .correspondence {
+      margin: 36px 0 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .correspondence-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      align-items: baseline;
+    }
+
+    .correspondence-label {
+      font-style: italic;
+      color: var(--ink-soft);
+      text-align: right;
+    }
+
+    .correspondence-value {
+      color: var(--burgundy);
+    }
+
+    .correspondence-value a {
+      color: var(--burgundy);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--burgundy);
+    }
+
+    .correspondence-value a:hover { color: var(--ink); border-bottom-style: solid; }
+
+    .letter-sign-off {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 36px;
+      color: var(--burgundy);
+      margin-top: 6px;
+    }
+
+    /* ==== Portrait frame (About) ==== */
+    .portrait-frame {
+      width: 180px;
+      height: 220px;
+      margin: 0 auto 32px;
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      padding: 10px;
+      box-shadow: 0 2px 0 rgba(139, 122, 85, 0.25);
+    }
+
+    .portrait-inner {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 40%, #D4C28E 0%, #B09668 70%, #8A7548 100%);
+      border: 1px solid var(--ink-faint);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--ink-soft);
+      font-size: 13px;
+      letter-spacing: 2px;
     }
 
-    .arrow-left { left: -2rem; }
-    .arrow-right { right: -2rem; }
-
-    .toggle-dark-mode {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.5rem 1rem;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      cursor: pointer;
-      z-index: 100;
-    }
-
-    .about-section {
+    /* ==== Page-level navigation ==== */
+    .page-nav {
+      position: absolute;
+      top: 32px;
+      left: 32px;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 2rem;
+      gap: 6px;
+      font-family: 'EB Garamond', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
     }
 
-    .about-text {
-      flex: 1;
-      min-width: 280px;
+    .page-nav:hover { color: var(--burgundy); }
+
+    /* Running footer */
+    .page-footer {
+      position: absolute;
+      bottom: 32px;
+      left: 72px;
+      right: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      font-weight: 500;
     }
 
-    .about-photo {
-      flex: 1;
-      text-align: center;
+    .page-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-variant-numeric: oldstyle-nums;
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
     }
 
-    .about-photo img {
-      width: 280px;
-      max-width: 100%;
-      border-radius: 15px;
+    /* Next/prev chapter nav */
+    .chapter-nav {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.875rem;
+    .chapter-nav-link {
+      color: var(--ink-soft);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-style: inherit;
+      font-size: inherit;
+      padding: 0;
+      transition: color 0.3s ease;
+      text-align: left;
     }
 
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      .tab-button {
-        font-size: 0.875rem;
-      }
-      .carousel-card {
-        padding: 0.8rem;
-      }
+    .chapter-nav-link:hover { color: var(--burgundy); }
+    .chapter-nav-link.next { text-align: right; }
+
+    .chapter-nav-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      body { padding: 16px 8px 40px; }
+      .page { padding: 56px 28px 72px; min-height: 700px; }
+      .page-container { min-height: 700px; }
+      .toc { max-width: 100%; }
+      .page-nav { top: 20px; left: 20px; }
+      .page-footer { left: 28px; right: 28px; bottom: 20px; }
+      .chapter-header { margin-bottom: 28px; }
+      .timeline-entry { grid-template-columns: 1fr; gap: 4px; }
+      .timeline-marker { text-align: left; border-right: none; padding-right: 0; border-left: 2px solid var(--rule); padding-left: 12px; }
+      .correspondence-item { grid-template-columns: 1fr; gap: 2px; }
+      .correspondence-label { text-align: left; }
+      .tale-description, .tale-tag { padding-left: 0; }
+      .bookmark { right: 40px; }
     }
   </style>
 </head>
 <body>
-  <div class="toggle-dark-mode" onclick="toggleDarkMode()">🌓 Toggle</div>
-  <div class="container">
-    <header>
-      <img src="images/title.png" alt="Shriya Desai" />
-    </header>
 
-    <div class="tabs">
-      <button class="tab-button active" onclick="switchTab(event, 'about')"><i class="fas fa-lightbulb"></i> About</button>
-      <button class="tab-button" onclick="switchTab(event, 'experience')"><i class="fas fa-briefcase"></i> Experience</button>
-      <button class="tab-button" onclick="switchTab(event, 'projects')"><i class="fas fa-laptop"></i> Projects</button>
-      <button class="tab-button" onclick="switchTab(event, 'contact')"><i class="fas fa-address-card"></i> Contact</button>
-    </div>
+  <div class="book">
+    <div class="page-container">
 
-    <div id="about" class="tab-content active">
-      <div class="about-section">
-        <div class="about-text">
-          <div class="typing-box"><span id="typewriter"></span></div>
-          <p>Hi! I’m Shriya, a tech-driven problem solver with experience across data analytics, embedded systems, and product strategy. I love building intuitive solutions that blend innovation with user-centered design. I'm currently working at Deloitte in analytics and exploring opportunities to pivot into product management.</p>
+      <!-- ========== I. TITLE PAGE / TOC ========== -->
+      <article class="page active title-page" data-page="toc">
+        <div class="bookmark"></div>
+
+        <div class="top-ornament">❦ ❦ ❦</div>
+        <div class="volume-label">A portfolio in six parts</div>
+
+        <h1 class="book-title">
+          <span class="small">the tales of</span>
+          Shriya
+        </h1>
+
+        <p class="book-subtitle">a collection of works, wonders, &amp; what-ifs</p>
+
+        <div class="middle-divider">⸺ ❦ ⸺</div>
+
+        <div class="toc-label">TABLE OF CONTENTS</div>
+
+        <nav class="toc">
+          <div class="toc-item" data-goto="about">
+            <span class="toc-numeral">I.</span>
+            <span class="toc-title">about the author</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">iii</span>
+          </div>
+          <div class="toc-item" data-goto="projects">
+            <span class="toc-numeral">II.</span>
+            <span class="toc-title">projects &amp; pet notions</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">xiv</span>
+          </div>
+          <div class="toc-item" data-goto="career">
+            <span class="toc-numeral">III.</span>
+            <span class="toc-title">chapters from a winding career</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">xxxii</span>
+          </div>
+          <div class="toc-item" data-goto="writing">
+            <span class="toc-numeral">IV.</span>
+            <span class="toc-title">musings &amp; marginalia</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">lviii</span>
+          </div>
+          <div class="toc-item" data-goto="teaching">
+            <span class="toc-numeral">V.</span>
+            <span class="toc-title">talks, teachings &amp; tea</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">lxxi</span>
+          </div>
+          <div class="toc-item" data-goto="letter">
+            <span class="toc-numeral">VI.</span>
+            <span class="toc-title">a letter to the reader</span>
+            <span class="toc-dots"></span>
+            <span class="toc-page">lxxxix</span>
+          </div>
+        </nav>
+
+        <div class="bottom-ornament">⸺ ✦ ⸺</div>
+        <div class="turn-page-hint">TURN ANY PAGE TO BEGIN</div>
+
+        <div class="page-footer">
+          <span></span>
+          <span class="page-number">i</span>
+          <span></span>
         </div>
-        <div class="about-photo">
-          <img src="images/photo.jpeg" alt="Shriya Desai" />
-        </div>
-      </div>
-    </div>
+      </article>
 
-    <div id="experience" class="tab-content">
-      <div class="carousel-wrapper">
-        <h3 class="carousel-title">Professional Experience</h3>
-        <div class="carousel-container">
-          <div class="carousel-card-container">
-            <div class="carousel-card">
-              <h4>Analyst – Deloitte USI</h4>
-              <p><strong>Domain:</strong> Customer & Marketing (Salesforce CRM + Analytics)</p>
-              <p>Collaborated on enterprise CRM implementations and data strategies. Received early recognition award for delivering a customer segmentation dashboard that enhanced campaign efficiency.</p>
+      <!-- ========== II. ABOUT ========== -->
+      <article class="page" data-page="about">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the first</div>
+          <h2 class="chapter-title">About the author</h2>
+          <p class="chapter-subtitle">in which we make her acquaintance</p>
+        </header>
+
+        <div class="portrait-frame">
+          <div class="portrait-inner">— portrait —</div>
+        </div>
+
+        <div class="chapter-body">
+          <p class="drop-cap">Our author, by her own account, was raised on circuit diagrams and library cards in equal measure. She trained first as an electrical engineer — a discipline that taught her to respect small voltages and smaller deadlines — and has since taken a long, roundabout path toward the question of why we build the things we build.</p>
+
+          <p>These days she keeps her attention on product: how it gets shaped, who it gets shaped for, and the strange gap between what people ask for and what they actually need. She teaches, occasionally. She writes, when the weather cooperates. And she remains, at heart, a maker of things that beep, blink, or otherwise prove they exist.</p>
+
+          <p>If you would like to know more, please turn the page.</p>
+        </div>
+
+        <div class="chapter-nav">
+          <span></span>
+          <button class="chapter-nav-link next" data-goto="projects">
+            <span class="chapter-nav-label">Next</span>
+            projects &amp; pet notions →
+          </button>
+        </div>
+
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">iii</span>
+          <span>chapter i</span>
+        </div>
+      </article>
+
+      <!-- ========== III. PROJECTS ========== -->
+      <article class="page" data-page="projects">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the second</div>
+          <h2 class="chapter-title">Projects &amp; pet notions</h2>
+          <p class="chapter-subtitle">small expeditions, mostly completed</p>
+        </header>
+
+        <div class="chapter-body" style="margin-bottom: 32px;">
+          <p class="drop-cap">What follows is a catalogue of things the author has made, studied, or otherwise tangled with. Some were assignments, some were obsessions, and a few fell between.</p>
+        </div>
+
+        <div>
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">i.</span>
+              <span class="tale-title">The Retrieval Dreams</span>
             </div>
-            <div class="carousel-card">
-              <h4>Product Intern – Stride</h4>
-              <p>Led the UI/UX and roadmap for an AI-driven platform connecting job seekers with early-stage startups. Product reached Top 30 in the FKCCI Startup Challenge and was reviewed by Microsoft.</p>
+            <p class="tale-description">A small system, built over several weekends, that tried to find things before they were quite lost. An experiment in retrieval-based tools and the particular joy of a good search result.</p>
+            <p class="tale-tag">— retrieval · python · quiet weekends</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">ii.</span>
+              <span class="tale-title">The Grant Hunt</span>
             </div>
-            <div class="carousel-card">
-              <h4>Research Intern – TATA Elxsi</h4>
-              <p><strong>Domain:</strong> ADAS & Autonomous Driving</p>
-              <p>Developed CNN models for object detection. Improved model precision by 35%, earning recognition for analytical excellence.</p>
+            <p class="tale-description">An expedition, mapped carefully across many spreadsheets, into the unlikely wildernesses of community arts funding. Conducted on behalf of a theatre in a small New Hampshire town.</p>
+            <p class="tale-tag">— research · community · pro bono</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">iii.</span>
+              <span class="tale-title">Tea &amp; Tradeoffs</span>
             </div>
-            <div class="carousel-card">
-              <h4>Intern – TATA Elxsi Medical Devices</h4>
-              <p>Worked on IoT automation for ventilator systems. Authored a detailed teardown and PCB documentation report for improved troubleshooting.</p>
+            <p class="tale-description">An ongoing investigation into the small, quiet decisions that make products feel considered. Product thinking as practice, not performance.</p>
+            <p class="tale-tag">— product · writing · ongoing</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">iv.</span>
+              <span class="tale-title">The Preceptor's Toolkit</span>
+            </div>
+            <p class="tale-description">Teaching materials prepared for seminars on innovation and organizational culture. Discussion guides, cold-call prompts, and the occasional hand-drawn diagram.</p>
+            <p class="tale-tag">— facilitation · teaching · design</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">v.</span>
+              <span class="tale-title">Circuits &amp; Civility</span>
+            </div>
+            <p class="tale-description">A hardware project from her electrical engineering days. Still on the shelf. Still, occasionally, beeping.</p>
+            <p class="tale-tag">— hardware · nostalgia · unfinished</p>
+          </div>
+        </div>
+
+        <div class="chapter-nav">
+          <button class="chapter-nav-link" data-goto="about">
+            <span class="chapter-nav-label">Previous</span>
+            ← about the author
+          </button>
+          <button class="chapter-nav-link next" data-goto="career">
+            <span class="chapter-nav-label">Next</span>
+            a winding career →
+          </button>
+        </div>
+
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">xiv</span>
+          <span>chapter ii</span>
+        </div>
+      </article>
+
+      <!-- ========== IV. CAREER ========== -->
+      <article class="page" data-page="career">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the third</div>
+          <h2 class="chapter-title">Chapters from a winding career</h2>
+          <p class="chapter-subtitle">a roundabout, in roughly chronological order</p>
+        </header>
+
+        <div class="timeline">
+          <div class="timeline-entry">
+            <div class="timeline-marker">Chapter the first</div>
+            <div>
+              <div class="timeline-title">The undergraduate years</div>
+              <p class="timeline-description">Spent studying electrons and occasionally surprising them. A bachelor's in electrical engineering, and the beginnings of a suspicion that the best engineering problems are usually people problems.</p>
             </div>
           </div>
-          <button class="arrow-button arrow-left" onclick="slide(this, -1)"><i class="fas fa-chevron-left"></i></button>
-          <button class="arrow-button arrow-right" onclick="slide(this, 1)"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
-    </div>
 
-    <div id="projects" class="tab-content">
-      <div class="carousel-wrapper">
-        <h3 class="carousel-title">Key Projects</h3>
-        <div class="carousel-container">
-          <div class="carousel-card-container">
-            <div class="carousel-card">
-              <h4>IEEE Ship Lift System</h4>
-              <p>Developed an embedded system prototype for Indian Navy. Published in IEEE Xplore. Focused on synchronized multi-motor control.</p>
-            </div>
-            <div class="carousel-card">
-              <h4>Recipe App</h4>
-              <p>Built using React + Firebase. Includes recipe list, wishlist, filtering, and add-new functionality with modern UI.</p>
-            </div>
-            <div class="carousel-card">
-              <h4>Hotel Booking Portal</h4>
-              <p>Created a responsive hotel listing app with date-filtered availability and room details view.</p>
-            </div>
-            <div class="carousel-card">
-              <h4>Startup Mapping Dashboard</h4>
-              <p>Visualized startup ecosystems using Python + Tableau. Helped recruiters track startups by stage, sector, location.</p>
+          <div class="timeline-entry">
+            <div class="timeline-marker">Chapter the second</div>
+            <div>
+              <div class="timeline-title">The first proper post</div>
+              <p class="timeline-description">An early role in engineering. Brief, instructive, and full of polite meetings about impolite problems.</p>
             </div>
           </div>
-          <button class="arrow-button arrow-left" onclick="slide(this, -1)"><i class="fas fa-chevron-left"></i></button>
-          <button class="arrow-button arrow-right" onclick="slide(this, 1)"><i class="fas fa-chevron-right"></i></button>
+
+          <div class="timeline-entry">
+            <div class="timeline-marker">Chapter the third</div>
+            <div>
+              <div class="timeline-title">A deliberate turn</div>
+              <p class="timeline-description">A pivot from engineering toward product, undertaken through the DAPL program. Build-vs-buy became a more interesting question than build-vs-also-build.</p>
+            </div>
+          </div>
+
+          <div class="timeline-entry">
+            <div class="timeline-marker">Chapter the fourth</div>
+            <div>
+              <div class="timeline-title">Teaching, alongside learning</div>
+              <p class="timeline-description">Preceptor and facilitator work for seminars on innovation and organizational culture. Reading Schein and Berns closely, and watching twenty people argue about them gently.</p>
+            </div>
+          </div>
+
+          <div class="timeline-entry">
+            <div class="timeline-marker">The latest chapter</div>
+            <div>
+              <div class="timeline-title">In progress</div>
+              <p class="timeline-description">Currently seeking a product or product-marketing role where an engineer's instincts are still welcome. Watch this page.</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div id="contact" class="tab-content">
-      <p>Let's connect! Email me at: <a href="mailto:shriyadesai@email.com">shriyadesai@email.com</a></p>
-    </div>
+        <div class="chapter-nav">
+          <button class="chapter-nav-link" data-goto="projects">
+            <span class="chapter-nav-label">Previous</span>
+            ← projects &amp; pet notions
+          </button>
+          <button class="chapter-nav-link next" data-goto="writing">
+            <span class="chapter-nav-label">Next</span>
+            musings &amp; marginalia →
+          </button>
+        </div>
 
-    <footer>
-      © 2025 Shriya Desai
-    </footer>
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">xxxii</span>
+          <span>chapter iii</span>
+        </div>
+      </article>
+
+      <!-- ========== V. WRITING ========== -->
+      <article class="page" data-page="writing">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the fourth</div>
+          <h2 class="chapter-title">Musings &amp; marginalia</h2>
+          <p class="chapter-subtitle">short essays, scribbled in the margins</p>
+        </header>
+
+        <div class="writings">
+          <div class="writing-entry">
+            <div class="writing-date">Spring 2026</div>
+            <h3 class="writing-title">On build-vs-buy, and other quiet questions</h3>
+            <p class="writing-excerpt">"The most interesting product decisions are rarely the ones that make it into the slide deck. They live in the hallways, in the half-sentence asides…"</p>
+          </div>
+
+          <div class="writing-entry">
+            <div class="writing-date">Winter 2025</div>
+            <h3 class="writing-title">What the engineer knows about products</h3>
+            <p class="writing-excerpt">"An engineer learns, early on, that the thing you wanted to build and the thing you actually built are almost never the same thing. This turns out to be a useful thing to know…"</p>
+          </div>
+
+          <div class="writing-entry">
+            <div class="writing-date">Autumn 2025</div>
+            <h3 class="writing-title">Notes from the iconoclast seminar</h3>
+            <p class="writing-excerpt">"What Berns calls an iconoclast, most teams just call a nuisance. The distinction, it turns out, is mostly about timing…"</p>
+          </div>
+
+          <div class="writing-entry">
+            <div class="writing-date">Summer 2025</div>
+            <h3 class="writing-title">The honest PM's tradeoff journal</h3>
+            <p class="writing-excerpt">"A small practice: keep a list of the things you chose not to do this week, and why. Read it back on Friday. Try not to flinch…"</p>
+          </div>
+        </div>
+
+        <div class="chapter-nav">
+          <button class="chapter-nav-link" data-goto="career">
+            <span class="chapter-nav-label">Previous</span>
+            ← a winding career
+          </button>
+          <button class="chapter-nav-link next" data-goto="teaching">
+            <span class="chapter-nav-label">Next</span>
+            talks &amp; teachings →
+          </button>
+        </div>
+
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">lviii</span>
+          <span>chapter iv</span>
+        </div>
+      </article>
+
+      <!-- ========== VI. TEACHING ========== -->
+      <article class="page" data-page="teaching">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the fifth</div>
+          <h2 class="chapter-title">Talks, teachings &amp; tea</h2>
+          <p class="chapter-subtitle">a brief account of seminars held and lessons learned</p>
+        </header>
+
+        <div class="chapter-body" style="margin-bottom: 32px;">
+          <p class="drop-cap">Teaching has always struck our author as the most reliable way to find out whether she actually understands something. Below, a short record of sessions facilitated and materials prepared.</p>
+        </div>
+
+        <div>
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">i.</span>
+              <span class="tale-title">Iconoclasts &amp; innovation</span>
+            </div>
+            <p class="tale-description">A seminar session drawing on Gregory Berns's <em>Iconoclast</em>, with structured discussion prompts and a handful of gently-contentious questions. Materials distributed as a formatted guide.</p>
+            <p class="tale-tag">— seminar · facilitation guide · pdf</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">ii.</span>
+              <span class="tale-title">Organizational culture</span>
+            </div>
+            <p class="tale-description">A session built on Edgar Schein's <em>Organizational Culture and Leadership</em>. Includes cold-call prompts, a facilitation protocol, and notes on managing the inevitable silences.</p>
+            <p class="tale-tag">— seminar · schein · facilitation</p>
+          </div>
+
+          <div class="tale-entry">
+            <div class="tale-header">
+              <span class="tale-number">iii.</span>
+              <span class="tale-title">Interview preparation, by request</span>
+            </div>
+            <p class="tale-description">Occasional one-on-one preparation for friends heading into product, engineering, or editorial interviews. STAR stories, behavioural questions, the usual. Available on request.</p>
+            <p class="tale-tag">— coaching · on request · warmly</p>
+          </div>
+        </div>
+
+        <div class="chapter-nav">
+          <button class="chapter-nav-link" data-goto="writing">
+            <span class="chapter-nav-label">Previous</span>
+            ← musings &amp; marginalia
+          </button>
+          <button class="chapter-nav-link next" data-goto="letter">
+            <span class="chapter-nav-label">Next</span>
+            a letter →
+          </button>
+        </div>
+
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">lxxi</span>
+          <span>chapter v</span>
+        </div>
+      </article>
+
+      <!-- ========== VII. LETTER ========== -->
+      <article class="page" data-page="letter">
+        <button class="page-nav" data-goto="toc">← Contents</button>
+
+        <header class="chapter-header">
+          <div class="chapter-eyebrow">Chapter the sixth</div>
+          <h2 class="chapter-title">A letter to the reader</h2>
+          <p class="chapter-subtitle">or: how to find the author, should you wish to</p>
+        </header>
+
+        <div class="letter">
+          <p class="letter-salutation">Dear Reader,</p>
+
+          <p>If you have turned every page and found something worth keeping — a project worth discussing, a piece of writing worth quarrelling with, a role you think might suit — I would be glad to hear from you.</p>
+
+          <p>Correspondence of any kind, in any register, is welcome. I can be reached by the usual means:</p>
+
+          <div class="correspondence">
+            <div class="correspondence-item">
+              <span class="correspondence-label">by electronic post —</span>
+              <span class="correspondence-value"><a href="mailto:hello@example.com">hello@example.com</a></span>
+            </div>
+            <div class="correspondence-item">
+              <span class="correspondence-label">by professional graph —</span>
+              <span class="correspondence-value"><a href="#">linkedin.com/in/shriya</a></span>
+            </div>
+            <div class="correspondence-item">
+              <span class="correspondence-label">by published code —</span>
+              <span class="correspondence-value"><a href="#">github.com/shriya</a></span>
+            </div>
+            <div class="correspondence-item">
+              <span class="correspondence-label">by occasional writing —</span>
+              <span class="correspondence-value"><a href="#">substack.com/@shriya</a></span>
+            </div>
+          </div>
+
+          <p class="letter-sign-off">Yours, in pursuit of good questions,</p>
+          <p class="signature">Shriya</p>
+        </div>
+
+        <div class="chapter-nav">
+          <button class="chapter-nav-link" data-goto="teaching">
+            <span class="chapter-nav-label">Previous</span>
+            ← talks &amp; teachings
+          </button>
+          <button class="chapter-nav-link next" data-goto="toc">
+            <span class="chapter-nav-label">Return</span>
+            to the beginning →
+          </button>
+        </div>
+
+        <div class="page-footer">
+          <span>the tales of shriya</span>
+          <span class="page-number">lxxxix</span>
+          <span>chapter vi · fin</span>
+        </div>
+      </article>
+
+    </div>
   </div>
 
   <script>
-    function switchTab(event, tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+    function goToPage(id) {
+      const current = document.querySelector('.page.active');
+      const next = document.querySelector('[data-page="' + id + '"]');
+      if (!current || !next || current === next) return;
+
+      current.classList.add('flipping-out');
+      current.classList.remove('active');
+
+      setTimeout(function () {
+        current.classList.remove('flipping-out');
+        next.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
     }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
+    // Wire up all navigation triggers
+    document.querySelectorAll('[data-goto]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        goToPage(el.getAttribute('data-goto'));
+      });
+    });
 
-    function slide(btn, dir) {
-      const container = btn.parentElement.querySelector('.carousel-card-container');
-      container.scrollBy({ left: dir * container.clientWidth, behavior: 'smooth' });
-    }
-
-    const words = ['Graduate @ Dartmouth', 'an Analyst at Deloitte','Product & Strategy Enthusiast'];
-    let i = 0, j = 0, isDeleting = false;
-
-    function type() {
-      const typewriter = document.getElementById('typewriter');
-      const current = words[i];
-      if (!isDeleting && j <= current.length) {
-        typewriter.textContent = current.substring(0, j++);
-        setTimeout(type, 120);
-      } else if (isDeleting && j >= 0) {
-        typewriter.textContent = current.substring(0, j--);
-        setTimeout(type, 60);
-      } else {
-        isDeleting = !isDeleting;
-        if (!isDeleting) i = (i + 1) % words.length;
-        setTimeout(type, 1000);
-      }
-    }
-
-    type();
+    // Keyboard navigation (left/right arrows between chapters)
+    const order = ['toc', 'about', 'projects', 'career', 'writing', 'teaching', 'letter'];
+    document.addEventListener('keydown', function (e) {
+      const active = document.querySelector('.page.active');
+      if (!active) return;
+      const idx = order.indexOf(active.getAttribute('data-page'));
+      if (e.key === 'ArrowRight' && idx < order.length - 1) goToPage(order[idx + 1]);
+      if (e.key === 'ArrowLeft' && idx > 0) goToPage(order[idx - 1]);
+    });
   </script>
 </body>
 </html>
