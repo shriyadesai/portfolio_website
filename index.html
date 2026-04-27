@@ -3,610 +3,441 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Tales of Shriya — A Portfolio</title>
+  <title>Shriya's Desk — A Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --paper: #F3E9D0;
+      --paper: #F5EFE2;
       --paper-2: #EADDBA;
-      --paper-edge: #D9C890;
       --ink: #2E2311;
       --ink-soft: #5F4A20;
       --ink-faint: #9F8C5F;
       --rule: #B5A878;
       --burgundy: #7A2E1D;
       --gold: #854F0B;
+      --terracotta: #A84A3A;
+      --sage: #8FA872;
+      --sky: #B5D4F4;
       --bg-dark: #1F1A10;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { min-height: 100%; }
-
+    html, body { width: 100%; height: 100%; overflow: hidden; }
     body {
       font-family: 'EB Garamond', Georgia, serif;
       background: var(--bg-dark);
       background-image: radial-gradient(ellipse at top, #2E2818 0%, #1F1A10 70%);
       color: var(--ink);
-      min-height: 100vh;
-      padding: 40px 24px 60px;
+      width: 100vw;
+      height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .book {
-      width: 100%;
-      max-width: 1800px;
-      perspective: 3000px;
-      perspective-origin: 50% 40%;
-    }
-
-    .book-stage {
+    /* Room */
+    .room {
       position: relative;
-      min-height: 640px;
-      transform-style: preserve-3d;
-    }
-
-    .spread {
-      display: none;
       width: 100%;
-      position: relative;
-      transform-origin: center center;
-      backface-visibility: hidden;
-    }
-
-    .spread.active {
-      display: flex;
-      animation: spreadIn 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-    }
-
-    .spread.flipping-out {
-      display: flex;
-      animation: spreadOut 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-    }
-
-    @keyframes spreadIn {
-      0% { transform: rotateY(-90deg) scale(0.96); opacity: 0; }
-      40% { opacity: 0.4; }
-      100% { transform: rotateY(0) scale(1); opacity: 1; }
-    }
-
-    @keyframes spreadOut {
-      0% { transform: rotateY(0) scale(1); opacity: 1; }
-      60% { opacity: 0.3; }
-      100% { transform: rotateY(90deg) scale(0.96); opacity: 0; }
-    }
-
-    .page {
-      flex: 1;
-      min-width: 0;
+      max-width: 1400px;
+      height: 100%;
+      max-height: 820px;
       background: var(--paper);
       background-image:
-        radial-gradient(ellipse at 15% 20%, rgba(139, 122, 85, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 80%, rgba(139, 122, 85, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.10) 0%, transparent 60%);
-      color: var(--ink);
-      min-height: 640px;
-      padding: 48px 56px 64px;
-      position: relative;
+        radial-gradient(ellipse at 20% 20%, rgba(212, 184, 135, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(255, 234, 197, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(139, 122, 85, 0.18) 0%, transparent 60%);
+      border-radius: 4px;
+      box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.55), 0 60px 120px -60px rgba(0, 0, 0, 0.4);
       overflow: hidden;
+      transition: filter 0.5s ease;
     }
 
-    .page-left {
-      border-radius: 4px 0 0 4px;
-      box-shadow:
-        inset -30px 0 60px -35px rgba(62, 46, 20, 0.45),
-        -2px 2px 0 rgba(139, 122, 85, 0.35),
-        -40px 40px 80px -30px rgba(0, 0, 0, 0.55),
-        -20px 60px 120px -60px rgba(0, 0, 0, 0.4);
-    }
+    /* Wall + floor + desk surface */
+    .wall { position: absolute; left: 0; top: 0; right: 0; height: 65%; background: linear-gradient(180deg, #F0E6CC 0%, #EADBB7 100%); }
+    .floor { position: absolute; left: 0; bottom: 0; right: 0; height: 35%; background: linear-gradient(180deg, #C9A876 0%, #A88B5C 100%); }
+    .desk-edge { position: absolute; left: 0; right: 0; top: 65%; height: 4px; background: #6F5530; opacity: 0.5; }
 
-    .page-right {
-      border-radius: 0 4px 4px 0;
-      box-shadow:
-        inset 30px 0 60px -35px rgba(62, 46, 20, 0.45),
-        2px 2px 0 rgba(139, 122, 85, 0.35),
-        40px 40px 80px -30px rgba(0, 0, 0, 0.55),
-        20px 60px 120px -60px rgba(0, 0, 0, 0.4);
-    }
-
-    .spread::before {
+    /* Floor planks */
+    .floor::before {
       content: '';
       position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(90deg, transparent 0, transparent 119px, rgba(89, 67, 38, 0.4) 119px, rgba(89, 67, 38, 0.4) 120px);
+    }
+
+    /* Title floats subtly */
+    .title-block {
+      position: absolute;
       left: 50%;
-      top: 8px;
-      bottom: 8px;
-      width: 1px;
-      background: rgba(62, 46, 20, 0.25);
-      z-index: 2;
+      top: 8%;
+      transform: translateX(-50%);
+      text-align: center;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .title-block .eyebrow {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+    .title-block h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(34px, 4vw, 52px);
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .title-block .sub {
+      font-family: 'EB Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Hot zones — buttons positioned over the SVG illustration */
+    .hot {
+      position: absolute;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease;
+      z-index: 3;
+    }
+    .hot:hover, .hot:focus {
+      outline: none;
+      transform: scale(1.06) translateY(-2px);
+      filter: drop-shadow(0 6px 16px rgba(46, 35, 17, 0.3));
+    }
+
+    /* Hot zone positions */
+    .hot-window { left: 8%; top: 12%; width: 18%; height: 38%; }
+    .hot-frame { left: 30%; top: 14%; width: 14%; height: 22%; }
+    .hot-shelf { right: 6%; top: 12%; width: 22%; height: 32%; }
+    .hot-notebook { left: 18%; top: 60%; width: 17%; height: 28%; }
+    .hot-cup { left: 40%; top: 65%; width: 10%; height: 22%; }
+    .hot-lamp { left: 52%; top: 40%; width: 14%; height: 38%; }
+    .hot-plant { right: 18%; top: 50%; width: 13%; height: 32%; }
+    .hot-letter { right: 4%; top: 70%; width: 14%; height: 18%; }
+
+    /* Hover caption */
+    .caption {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--ink-soft);
+      background: rgba(245, 233, 204, 0.92);
+      border: 1px solid rgba(139, 122, 85, 0.3);
+      padding: 8px 18px;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      z-index: 5;
+    }
+    .caption.visible { opacity: 1; }
+
+    /* Hint at bottom */
+    .hint {
+      position: absolute;
+      right: 24px;
+      bottom: 12px;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 12px;
+      color: var(--ink-faint);
+      letter-spacing: 0.5px;
+    }
+
+    /* Detail overlay (panels for non-notebook sections) */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(46, 35, 17, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      z-index: 10;
+      animation: fadeIn 0.3s ease;
+    }
+    .overlay.open { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .panel {
+      max-width: 540px;
+      width: 100%;
+      max-height: 85%;
+      overflow-y: auto;
+      animation: panelIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+    }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(245, 233, 204, 0.9);
+      border: 1px solid rgba(95, 74, 32, 0.3);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      transition: all 0.2s ease;
+    }
+    .close-btn:hover { background: var(--paper); color: var(--burgundy); }
+
+    /* About — tea cup style: small handwritten card on a saucer */
+    .panel-about {
+      background: #F5E9CC;
+      border-radius: 4px;
+      padding: 48px 56px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+      position: relative;
+      border: 1px solid rgba(139, 122, 85, 0.3);
+    }
+    .panel-about::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(139, 122, 85, 0.2);
+      border-radius: 2px;
       pointer-events: none;
     }
 
-    .bookmark {
+    /* Letter — actual letter style */
+    .panel-letter {
+      background: #F5E9CC;
+      padding: 56px 64px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+      position: relative;
+      transform: rotate(-1deg);
+    }
+    .panel-letter::after {
+      content: '';
       position: absolute;
-      top: 0;
-      right: 80px;
-      width: 18px;
-      height: 70px;
-      background: var(--burgundy);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
-      opacity: 0.9;
-      z-index: 3;
+      top: -10px;
+      left: 30%;
+      width: 80px;
+      height: 22px;
+      background: rgba(168, 74, 58, 0.6);
+      transform: rotate(-3deg);
     }
 
-    .cover-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 80px 60px;
+    /* Plant / writing — page from a journal */
+    .panel-writing {
+      background: #F5E9CC;
+      padding: 48px 56px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+      background-image:
+        repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(139, 122, 85, 0.2) 31px, rgba(139, 122, 85, 0.2) 32px);
+      border-left: 3px solid rgba(168, 74, 58, 0.5);
     }
 
-    .top-ornament {
-      color: var(--gold);
-      letter-spacing: 10px;
-      font-size: 11px;
-      margin-bottom: 32px;
+    /* Lamp / values — small framed list */
+    .panel-values {
+      background: #F5E9CC;
+      padding: 44px 52px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+      border: 8px solid #8B6443;
+      border-image: none;
+      position: relative;
+    }
+    .panel-values::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(139, 122, 85, 0.4);
+      pointer-events: none;
     }
 
-    .volume-label {
-      font-size: 11px;
-      letter-spacing: 5px;
-      color: var(--gold);
-      font-weight: 500;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-
-    .book-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(48px, 5.5vw, 72px);
-      line-height: 1;
-      color: var(--ink);
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-
-    .book-title .small {
-      display: block;
-      font-size: 0.36em;
-      font-style: italic;
-      color: var(--ink-soft);
-      margin-bottom: 0.2em;
-      letter-spacing: 2px;
-      text-transform: lowercase;
-      font-weight: 400;
-    }
-
-    .book-subtitle {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 18px;
-      color: var(--ink-soft);
-      margin-top: 28px;
-      max-width: 340px;
-    }
-
-    .middle-divider {
-      margin: 44px auto 32px;
-      color: var(--gold);
-      font-size: 16px;
-    }
-
-    .author-line {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      color: var(--ink);
-      font-weight: 400;
-      margin-top: 12px;
-    }
-
-    .bottom-ornament {
-      margin-top: 48px;
-      color: var(--gold);
-      font-size: 16px;
-    }
-
-    .chapter-mark-page {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .chapter-mark-eyebrow {
-      font-size: 11px;
-      letter-spacing: 5px;
-      color: var(--gold);
-      font-weight: 500;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .chapter-mark-numeral {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(120px, 18vw, 200px);
-      line-height: 0.85;
-      color: var(--burgundy);
-      font-weight: 500;
-      margin-bottom: 32px;
-    }
-
-    .chapter-mark-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(28px, 3vw, 40px);
-      color: var(--ink);
-      line-height: 1.15;
-      max-width: 80%;
-      margin-bottom: 16px;
-      font-weight: 500;
-    }
-
-    .chapter-mark-rule {
-      width: 40px;
-      height: 1px;
-      background: var(--rule);
-      margin: 16px auto;
-    }
-
-    .chapter-mark-epigraph {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 15px;
-      color: var(--ink-soft);
-      max-width: 280px;
-      line-height: 1.65;
-      margin-top: 8px;
-    }
-
-    .decoration {
-      margin-top: 40px;
-      opacity: 0.75;
-    }
-
-    .toc-label {
-      font-size: 11px;
-      letter-spacing: 5px;
-      color: var(--gold);
-      margin-bottom: 28px;
-      font-weight: 500;
-      text-align: center;
-    }
-
-    .toc-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 36px;
-      color: var(--ink);
-      text-align: center;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    .toc-sub {
-      text-align: center;
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 14px;
-      color: var(--ink-soft);
-      margin-bottom: 40px;
-    }
-
-    .toc {
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .toc-item {
-      display: flex;
-      align-items: baseline;
-      margin-bottom: 18px;
-      cursor: pointer;
-      padding: 4px 0;
-    }
-
-    .toc-item:hover .toc-title,
-    .toc-item:hover .toc-numeral { color: var(--burgundy); }
-    .toc-item:hover .toc-dots { border-bottom-color: var(--burgundy); }
-
-    .toc-numeral {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 19px;
-      width: 40px;
-      color: var(--ink);
-      flex-shrink: 0;
-      transition: color 0.3s ease;
-    }
-
-    .toc-title {
-      font-family: 'EB Garamond', serif;
-      font-size: 16px;
-      color: var(--ink);
-      transition: color 0.3s ease;
-    }
-
-    .toc-dots {
-      flex: 1;
-      border-bottom: 1px dotted var(--ink-faint);
-      margin: 0 10px 5px;
-      transition: border-color 0.3s ease;
-    }
-
-    .toc-page {
-      font-family: 'EB Garamond', serif;
-      font-variant-numeric: oldstyle-nums;
-      font-size: 14px;
-      color: var(--ink-soft);
-    }
-
-    .turn-page-hint {
-      margin-top: 48px;
-      font-size: 11px;
-      letter-spacing: 4px;
-      color: var(--gold);
-      font-weight: 500;
-      text-align: center;
-    }
-
-    .chapter-header {
-      text-align: center;
-      margin-bottom: 36px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--rule);
+    /* Window / career — postcards stack */
+    .panel-career {
+      background: #F5E9CC;
+      padding: 48px 56px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
       position: relative;
     }
 
-    .chapter-header::after {
-      content: '✦';
-      position: absolute;
-      bottom: -11px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--paper);
-      padding: 0 14px;
-      color: var(--gold);
-      font-size: 14px;
+    /* Frame / about-photo - polaroid */
+    .panel-frame {
+      background: #F5E9CC;
+      padding: 24px 24px 60px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+      transform: rotate(-2deg);
     }
 
-    .chapter-eyebrow {
+    /* Shelf / writing list */
+    .panel-shelf {
+      background: #F5E9CC;
+      padding: 48px 56px;
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.4);
+    }
+
+    /* Common panel typography */
+    .panel-eyebrow {
+      font-family: 'EB Garamond', serif;
       font-size: 11px;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       color: var(--gold);
+      text-transform: uppercase;
       margin-bottom: 12px;
-      font-weight: 500;
-      text-transform: uppercase;
     }
-
-    .chapter-title {
+    .panel-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
-      font-size: clamp(30px, 3vw, 42px);
-      line-height: 1.1;
+      font-size: 36px;
       color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 18px;
+      line-height: 1.05;
     }
-
-    .chapter-subtitle {
+    .panel-body {
       font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 15px;
-      color: var(--ink-soft);
-    }
-
-    .chapter-body {
-      font-family: 'EB Garamond', serif;
-      font-size: 17px;
-      line-height: 1.8;
+      font-size: 16px;
+      line-height: 1.75;
       color: var(--ink);
     }
-
-    .chapter-body p { margin-bottom: 18px; }
-
-    .drop-cap::first-letter {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
-      font-style: italic;
-      font-size: 72px;
-      line-height: 0.85;
-      float: left;
-      padding: 8px 12px 0 0;
-      color: var(--burgundy);
-    }
-
-    .tale-entry { margin-bottom: 26px; }
-
-    .tale-header {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 4px;
-    }
-
-    .tale-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--gold);
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-
-    .tale-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 22px;
-      color: var(--burgundy);
-      font-weight: 500;
-    }
-
-    .tale-description {
-      font-size: 15.5px;
-      line-height: 1.65;
-      color: var(--ink);
-      padding-left: 32px;
-    }
-
-    .tale-tag {
-      font-size: 12px;
-      color: var(--ink-faint);
-      font-style: italic;
-      margin-top: 4px;
-      padding-left: 32px;
-    }
-
-    .timeline-entry {
-      margin-bottom: 24px;
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 16px;
-      align-items: baseline;
-    }
-
-    .timeline-marker {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--gold);
-      font-size: 14px;
-      text-align: right;
-      border-right: 1px solid var(--rule);
-      padding-right: 16px;
-    }
-
-    .timeline-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 19px;
-      color: var(--ink);
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .timeline-description {
-      font-size: 14.5px;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-
-    .writing-entry {
-      padding: 16px 0;
-      border-bottom: 1px dotted var(--rule);
-    }
-
-    .writing-entry:last-child { border-bottom: none; }
-
-    .writing-date {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: var(--gold);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .writing-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 21px;
-      color: var(--ink);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-
-    .writing-excerpt {
-      font-size: 14.5px;
-      line-height: 1.65;
-      color: var(--ink-soft);
-      font-style: italic;
-    }
-
-    .letter {
-      font-family: 'EB Garamond', serif;
-      font-size: 16.5px;
-      line-height: 1.85;
-    }
-
-    .letter-salutation {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 26px;
-      margin-bottom: 20px;
-      color: var(--ink);
-    }
-
-    .letter p { margin-bottom: 16px; }
-
-    .correspondence {
-      margin: 28px 0 24px;
-      padding: 20px 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .correspondence-item {
-      display: grid;
-      grid-template-columns: 170px 1fr;
-      gap: 14px;
-      margin-bottom: 8px;
-      font-size: 15px;
-      align-items: baseline;
-    }
-
-    .correspondence-label {
-      font-style: italic;
-      color: var(--ink-soft);
-      text-align: right;
-    }
-
-    .correspondence-value a {
-      color: var(--burgundy);
-      text-decoration: none;
-      border-bottom: 1px dotted var(--burgundy);
-    }
-
-    .correspondence-value a:hover { color: var(--ink); border-bottom-style: solid; }
-
-    .letter-sign-off {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      margin-top: 20px;
-      margin-bottom: 4px;
-    }
+    .panel-body p { margin-bottom: 14px; }
+    .panel-body p:last-child { margin-bottom: 0; }
+    .panel-body em { color: var(--burgundy); }
 
     .signature {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 600;
-      font-size: 36px;
+      font-size: 32px;
       color: var(--burgundy);
-      margin-top: 6px;
+      margin-top: 14px;
     }
 
-    .portrait-frame {
-      width: 220px;
-      height: 270px;
-      margin: 0 auto 20px;
-      background: var(--paper-2);
-      border: 1px solid var(--rule);
-      padding: 12px;
-      box-shadow: 0 2px 0 rgba(139, 122, 85, 0.25);
+    .contact-list {
+      margin-top: 18px;
+      font-family: 'EB Garamond', serif;
+      font-size: 15px;
+    }
+    .contact-list div {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 14px;
+      margin-bottom: 6px;
+      align-items: baseline;
+    }
+    .contact-list .lbl { font-style: italic; color: var(--ink-soft); text-align: right; }
+    .contact-list a {
+      color: var(--burgundy);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--burgundy);
     }
 
-    .portrait-inner {
-      width: 100%;
-      height: 100%;
+    .values-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      font-family: 'EB Garamond', serif;
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    .values-list li {
+      padding-left: 22px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .values-list li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .career-step {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px dotted var(--rule);
+      align-items: baseline;
+    }
+    .career-step:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .career-step .when {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 13px;
+      text-align: right;
+    }
+    .career-step .what {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 19px;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .career-step .desc {
+      font-family: 'EB Garamond', serif;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .writing-item {
+      padding: 12px 0;
+      border-bottom: 1px dotted var(--rule);
+    }
+    .writing-item:last-child { border-bottom: none; }
+    .writing-item .date {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .writing-item .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 19px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .writing-item .ex {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .polaroid-photo {
+      width: 280px;
+      height: 280px;
       background: radial-gradient(ellipse at 50% 40%, #D4C28E 0%, #B09668 70%, #8A7548 100%);
-      border: 1px solid var(--ink-faint);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -615,816 +446,701 @@
       color: var(--ink-soft);
       font-size: 13px;
       letter-spacing: 2px;
+      margin-bottom: 14px;
     }
-
-    .portrait-caption {
-      text-align: center;
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 14px;
-      color: var(--ink-soft);
-    }
-
-    .page-nav {
-      position: absolute;
-      top: 32px;
-      left: 32px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'EB Garamond', serif;
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: var(--ink-faint);
-      text-transform: uppercase;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      z-index: 4;
-    }
-
-    .page-nav:hover { color: var(--burgundy); }
-
-    .page-footer {
-      position: absolute;
-      bottom: 28px;
-      left: 60px;
-      right: 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: var(--ink-faint);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .page-number {
+    .polaroid-cap {
       font-family: 'Cormorant Garamond', serif;
-      font-variant-numeric: oldstyle-nums;
       font-style: italic;
-      font-size: 14px;
-      letter-spacing: 0;
-      text-transform: none;
-    }
-
-    .chapter-nav {
-      margin-top: 36px;
-      padding-top: 24px;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: 14px;
-    }
-
-    .chapter-nav-link {
-      color: var(--ink-soft);
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-      font-style: inherit;
-      font-size: inherit;
-      padding: 0;
-      transition: color 0.3s ease;
-      text-align: left;
-    }
-
-    .chapter-nav-link:hover { color: var(--burgundy); }
-    .chapter-nav-link.next { text-align: right; }
-
-    .chapter-nav-label {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-style: normal;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-
-    .book-caption {
       text-align: center;
+      color: var(--ink-soft);
+      font-size: 16px;
+    }
+
+    /* NOTEBOOK — separate, larger overlay where the notebook expands across desk */
+    .notebook-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(46, 35, 17, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      z-index: 10;
+    }
+    .notebook-overlay.open {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+    .notebook-spread {
+      max-width: 1100px;
+      width: 100%;
+      max-height: 90%;
+      background: #F5E9CC;
+      box-shadow: 0 30px 80px -30px rgba(0,0,0,0.6);
+      border-radius: 4px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+      animation: notebookOpen 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    @keyframes notebookOpen {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .notebook-spread::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, rgba(139, 122, 85, 0.5), transparent);
+      transform: translateX(-1px);
+    }
+    .notebook-page {
+      padding: 56px 56px 64px;
+      position: relative;
+      min-height: 600px;
+    }
+    .notebook-page-left {
+      background: linear-gradient(90deg, #EADDBA 0%, #F5E9CC 30%);
+    }
+
+    .notebook-toc {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0 0;
+    }
+    .notebook-toc li {
+      display: flex;
+      align-items: baseline;
+      padding: 12px 0;
+      border-bottom: 1px dotted var(--rule);
+      cursor: pointer;
+      transition: color 0.25s ease;
+    }
+    .notebook-toc li:hover {
+      color: var(--burgundy);
+    }
+    .notebook-toc li:hover .toc-name { color: var(--burgundy); }
+    .notebook-toc li.active .toc-name { color: var(--burgundy); font-weight: 500; }
+    .toc-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      width: 32px;
+      font-size: 17px;
+    }
+    .toc-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--ink);
+      flex: 1;
+      transition: color 0.25s ease;
+    }
+    .toc-meta {
+      font-family: 'EB Garamond', serif;
+      font-size: 11px;
       color: var(--ink-faint);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .project-detail-eyebrow {
+      font-family: 'EB Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .project-detail-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 36px;
+      color: var(--ink);
+      margin-bottom: 6px;
+      line-height: 1.05;
+    }
+    .project-detail-role {
       font-family: 'EB Garamond', serif;
       font-style: italic;
-      font-size: 13px;
-      margin-top: 28px;
-      letter-spacing: 0.5px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-bottom: 22px;
     }
-
-    .book-caption kbd {
-      display: inline-block;
-      padding: 2px 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
+    .project-detail-body {
       font-family: 'EB Garamond', serif;
-      font-style: normal;
-      font-size: 12px;
-      color: rgba(213, 196, 148, 0.9);
-      margin: 0 3px;
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: var(--ink);
     }
+    .project-detail-body p { margin-bottom: 14px; }
 
+    .notebook-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      background: rgba(168, 74, 58, 0.85);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #F5E9CC;
+      font-size: 18px;
+      z-index: 20;
+    }
+    .notebook-close:hover { background: var(--burgundy); }
+
+    /* Mobile / narrow */
     @media (max-width: 900px) {
-      body { padding: 20px 12px 40px; }
-      .book { max-width: 640px; }
-      .book-stage { min-height: auto; }
-      .spread { flex-direction: column; }
-      .page { min-height: auto; padding: 56px 32px 72px; }
-
-      .page-left {
-        border-radius: 4px 4px 0 0;
-        box-shadow:
-          inset 0 -30px 50px -30px rgba(62, 46, 20, 0.3),
-          0 -2px 0 rgba(139, 122, 85, 0.2),
-          0 -40px 80px -30px rgba(0, 0, 0, 0.5);
+      body { padding: 8px; }
+      .room { max-height: none; height: calc(100vh - 16px); }
+      .title-block h1 { font-size: 28px; }
+      .title-block .sub { font-size: 9px; letter-spacing: 2px; }
+      .panel { max-width: 92%; }
+      .panel-about, .panel-letter, .panel-writing, .panel-values, .panel-career, .panel-frame, .panel-shelf {
+        padding: 32px 28px;
       }
-
-      .page-right {
-        border-radius: 0 0 4px 4px;
-        box-shadow:
-          inset 0 30px 50px -30px rgba(62, 46, 20, 0.3),
-          0 2px 0 rgba(139, 122, 85, 0.2),
-          0 40px 80px -30px rgba(0, 0, 0, 0.5);
+      .panel-title { font-size: 26px; }
+      .notebook-spread {
+        grid-template-columns: 1fr;
+        max-height: 92%;
       }
-
-      .spread::before {
-        left: 8px;
-        right: 8px;
-        top: 50%;
-        bottom: auto;
-        width: auto;
-        height: 1px;
-      }
-
-      .cover-left, .chapter-mark-page { padding: 48px 32px; }
-      .chapter-mark-numeral { font-size: 96px; margin-bottom: 20px; }
-      .chapter-mark-title { font-size: 28px; }
-      .timeline-entry { grid-template-columns: 1fr; gap: 4px; }
-      .timeline-marker {
-        text-align: left;
-        border-right: none;
-        padding-right: 0;
-        border-left: 2px solid var(--rule);
-        padding-left: 12px;
-      }
-      .correspondence-item { grid-template-columns: 1fr; gap: 2px; }
-      .correspondence-label { text-align: left; }
-      .tale-description, .tale-tag { padding-left: 0; }
-      .page-nav { top: 20px; left: 20px; }
-      .page-footer { left: 32px; right: 32px; bottom: 20px; }
-      .bookmark { right: 44px; }
-      .portrait-frame { width: 180px; height: 220px; }
+      .notebook-spread::before { display: none; }
+      .notebook-page { padding: 32px 24px; min-height: auto; }
+      .career-step, .contact-list div { grid-template-columns: 1fr; gap: 4px; }
+      .career-step .when, .contact-list .lbl { text-align: left; }
     }
-   .projects-list {
-  max-width: 100%;
-  margin: 0;
-}
-
-.project-card {
-  display: grid;
-  gap: 18px;
-  margin-bottom: 18px;
-  padding-bottom: 16px;
-  border-bottom: 1px dotted var(--rule);
-  align-items: center;
-}
-
-.project-card:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-.project-card.image-left {
-  grid-template-columns: 130px 1fr;
-}
-
-.project-card.image-right {
-  grid-template-columns: 1fr 130px;
-}
-
-.project-card.image-right .project-content {
-  text-align: right;
-}
-
-.project-image-wrap {
-  width: 130px;
-  height: 130px;
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
-  padding: 6px;
-  box-shadow: 0 2px 0 rgba(139, 122, 85, 0.2);
-}
-
-.project-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-.project-role {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  text-transform: uppercase;
-  font-weight: 500;
-  margin-bottom: 3px;
-}
-
-.project-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 22px;
-  color: var(--burgundy);
-  font-weight: 500;
-  margin-bottom: 4px;
-  line-height: 1.05;
-}
-
-.project-blurb {
-  font-family: 'EB Garamond', serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink);
-}
-
-@media (max-width: 900px) {
-  .project-card.image-left,
-  .project-card.image-right {
-    grid-template-columns: 90px 1fr;
-  }
-  .project-card.image-right .project-content { text-align: left; }
-  .project-card.image-right .project-image-wrap { order: -1; }
-  .project-image-wrap { width: 90px; height: 90px; }
-  .project-name { font-size: 20px; }
-}
   </style>
 </head>
 <body>
 
-  <div class="book">
-    <div class="book-stage">
+  <div class="room" id="room">
 
-      <section class="spread active" data-page="toc">
-        <article class="page page-left cover-left">
-          <div class="top-ornament">❦ ❦ ❦</div>
-          <div class="volume-label">A portfolio in six parts</div>
-          <h1 class="book-title">
-            <span class="small">the tales of</span>
-            Shriya
-          </h1>
-          <p class="book-subtitle">a collection of works, wonders, &amp; what-ifs</p>
-          <div class="middle-divider">⸺ ❦ ⸺</div>
-          <div class="author-line">written &amp; illustrated by the author</div>
-          <div class="bottom-ornament">⸺ ✦ ⸺</div>
-        </article>
+    <div class="wall"></div>
+    <div class="floor"></div>
+    <div class="desk-edge"></div>
 
-        <article class="page page-right">
-          <div class="bookmark"></div>
-          <div class="toc-label">TABLE OF CONTENTS</div>
-          <h2 class="toc-heading">Six stories</h2>
-          <p class="toc-sub">and a letter at the end</p>
+    <!-- Title floats high on the wall -->
+    <div class="title-block">
+      <div class="eyebrow">welcome to —</div>
+      <h1>Shriya's Desk</h1>
+      <div class="sub">a portfolio · in one room</div>
+    </div>
 
-          <nav class="toc">
-            <div class="toc-item" data-goto="about">
-              <span class="toc-numeral">I.</span>
-              <span class="toc-title">about the author</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">iii</span>
-            </div>
-            <div class="toc-item" data-goto="projects">
-              <span class="toc-numeral">II.</span>
-              <span class="toc-title">projects &amp; pet notions</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">xiv</span>
-            </div>
-            <div class="toc-item" data-goto="career">
-              <span class="toc-numeral">III.</span>
-              <span class="toc-title">a winding career</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">xxxii</span>
-            </div>
-            <div class="toc-item" data-goto="writing">
-              <span class="toc-numeral">IV.</span>
-              <span class="toc-title">musings &amp; marginalia</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">lviii</span>
-            </div>
-            <div class="toc-item" data-goto="teaching">
-              <span class="toc-numeral">V.</span>
-              <span class="toc-title">talks, teachings &amp; tea</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">lxxi</span>
-            </div>
-            <div class="toc-item" data-goto="letter">
-              <span class="toc-numeral">VI.</span>
-              <span class="toc-title">a letter to the reader</span>
-              <span class="toc-dots"></span>
-              <span class="toc-page">lxxxix</span>
-            </div>
-          </nav>
+    <!-- Big illustrated room SVG, layered behind hot zones -->
+    <svg viewBox="0 0 1400 820" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;" xmlns="http://www.w3.org/2000/svg">
 
-          <div class="turn-page-hint">TURN THE PAGE TO BEGIN</div>
+      <!-- WINDOW (left) -->
+      <g transform="translate(115, 105)">
+        <rect x="0" y="0" width="240" height="290" fill="#8B6443" stroke="#5D3A1E" stroke-width="3"/>
+        <rect x="10" y="10" width="220" height="270" fill="#B5D4F4"/>
+        <line x1="120" y1="10" x2="120" y2="280" stroke="#5D3A1E" stroke-width="3"/>
+        <line x1="10" y1="145" x2="230" y2="145" stroke="#5D3A1E" stroke-width="3"/>
+        <!-- sky details -->
+        <circle cx="170" cy="60" r="22" fill="#FAEAC5" opacity="0.85"/>
+        <path d="M 14 200 Q 50 175, 90 195 Q 105 175, 116 200 L 116 280 L 14 280 Z" fill="#8FA872" opacity="0.7"/>
+        <path d="M 124 220 Q 160 200, 195 215 Q 215 195, 230 215 L 230 280 L 124 280 Z" fill="#8FA872" opacity="0.65"/>
+        <!-- birds -->
+        <path d="M 180 110 Q 184 106, 188 110 Q 192 106, 196 110" stroke="#5D3A1E" stroke-width="1.2" fill="none"/>
+        <path d="M 60 80 Q 64 77, 68 80 Q 72 77, 76 80" stroke="#5D3A1E" stroke-width="1" fill="none"/>
+      </g>
 
-          <div class="page-footer">
-            <span></span>
-            <span class="page-number">i</span>
-            <span></span>
-          </div>
-        </article>
-      </section>
+      <!-- FRAMED PHOTO ON WALL -->
+      <g transform="translate(440, 130)">
+        <rect x="0" y="0" width="160" height="170" fill="#8B6443" stroke="#5D3A1E" stroke-width="2.5"/>
+        <rect x="10" y="10" width="140" height="150" fill="#EADDBA"/>
+        <ellipse cx="80" cy="75" rx="32" ry="38" fill="#D4A878"/>
+        <path d="M 50 130 Q 80 100, 110 130 L 110 160 L 50 160 Z" fill="#A84A3A"/>
+        <text x="80" y="175" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#5D3A1E">— shriya, 2024 —</text>
+      </g>
 
-      <section class="spread" data-page="about">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the first</div>
-          <div class="chapter-mark-numeral">I</div>
-          <div class="portrait-frame">
-            <div class="portrait-inner">— portrait —</div>
-          </div>
-          <p class="portrait-caption">our author, pictured</p>
-        </article>
+      <!-- BOOKSHELF (right wall) -->
+      <g transform="translate(990, 100)">
+        <rect x="0" y="0" width="290" height="270" fill="#A87A52" stroke="#5D3A1E" stroke-width="3"/>
+        <rect x="0" y="0" width="290" height="270" fill="none" stroke="#5D3A1E" stroke-width="1" opacity="0.5"/>
+        <line x1="0" y1="90" x2="290" y2="90" stroke="#5D3A1E" stroke-width="2.5"/>
+        <line x1="0" y1="180" x2="290" y2="180" stroke="#5D3A1E" stroke-width="2.5"/>
 
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the first</div>
-            <h2 class="chapter-title">About the author</h2>
-            <p class="chapter-subtitle">in which we make her acquaintance</p>
-          </header>
+        <!-- shelf 1 books -->
+        <rect x="14" y="20" width="22" height="68" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="38" y="14" width="20" height="74" fill="#3D5A7A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="60" y="22" width="26" height="66" fill="#8B6443" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="88" y="18" width="18" height="70" fill="#8FA872" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="108" y="24" width="24" height="64" fill="#E8B540" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="134" y="20" width="20" height="68" fill="#7A2E1D" stroke="#5D3A1E" stroke-width="1.5"/>
+        <!-- tilted book -->
+        <rect x="158" y="26" width="22" height="62" fill="#D4A878" stroke="#5D3A1E" stroke-width="1.5" transform="rotate(-12 169 57)"/>
+        <rect x="200" y="20" width="22" height="68" fill="#3D5A7A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="224" y="22" width="26" height="66" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="252" y="18" width="20" height="70" fill="#8FA872" stroke="#5D3A1E" stroke-width="1.5"/>
 
-          <div class="chapter-body">
-            <p class="drop-cap">Our author, by her own account, was raised on circuit diagrams and library cards in equal measure. She trained first as an electrical engineer — a discipline that taught her to respect small voltages and smaller deadlines — and has since taken a long, roundabout path toward the question of why we build the things we build.</p>
+        <!-- shelf 2 books -->
+        <rect x="14" y="108" width="20" height="68" fill="#5D3A1E" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="36" y="112" width="22" height="64" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="60" y="108" width="24" height="68" fill="#E8B540" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="86" y="114" width="18" height="62" fill="#8FA872" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="106" y="110" width="26" height="66" fill="#D4A878" stroke="#5D3A1E" stroke-width="1.5"/>
+        <!-- decorative item -->
+        <ellipse cx="160" cy="170" rx="22" ry="6" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <path d="M 145 170 Q 150 145, 160 140 Q 170 145, 175 170 Z" fill="#8FA872" stroke="#5D3A1E" stroke-width="1.5"/>
+        <!-- more books -->
+        <rect x="200" y="112" width="22" height="64" fill="#3D5A7A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="224" y="108" width="20" height="68" fill="#8B6443" stroke="#5D3A1E" stroke-width="1.5"/>
+        <rect x="246" y="110" width="26" height="66" fill="#7A2E1D" stroke="#5D3A1E" stroke-width="1.5"/>
 
-            <p>These days she keeps her attention on product: how it gets shaped, who it gets shaped for, and the strange gap between what people ask for and what they actually need. She teaches, occasionally. She writes, when the weather cooperates. And she remains, at heart, a maker of things that beep, blink, or otherwise prove they exist.</p>
+        <!-- shelf 3 -->
+        <rect x="20" y="200" width="100" height="60" fill="#F5E9CC" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="24" y1="212" x2="116" y2="212" stroke="#A67848" stroke-width="0.8"/>
+        <line x1="24" y1="222" x2="100" y2="222" stroke="#A67848" stroke-width="0.8"/>
+        <line x1="24" y1="232" x2="116" y2="232" stroke="#A67848" stroke-width="0.8"/>
+        <line x1="24" y1="242" x2="90" y2="242" stroke="#A67848" stroke-width="0.8"/>
+        <text x="70" y="258" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#5D3A1E">writings</text>
+        <!-- small object -->
+        <circle cx="180" cy="240" r="22" fill="#E8B540" stroke="#5D3A1E" stroke-width="1.5"/>
+        <circle cx="180" cy="240" r="14" fill="#FAEAC5"/>
+        <line x1="180" y1="226" x2="180" y2="232" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="180" y1="248" x2="180" y2="254" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="166" y1="240" x2="172" y2="240" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="188" y1="240" x2="194" y2="240" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="180" y1="240" x2="186" y2="234" stroke="#5D3A1E" stroke-width="1.5"/>
+        <line x1="180" y1="240" x2="180" y2="232" stroke="#5D3A1E" stroke-width="1"/>
 
-            <p>If you would like to know more, please turn the page.</p>
-          </div>
+        <rect x="220" y="210" width="50" height="50" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <text x="245" y="240" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#F5E9CC">IEEE</text>
+      </g>
 
-          <div class="chapter-nav">
-            <span></span>
-            <button class="chapter-nav-link next" data-goto="projects">
-              <span class="chapter-nav-label">Next</span>
-              projects &amp; pet notions →
-            </button>
-          </div>
+      <!-- DESK SURFACE (subtle wood plank line near top of floor) -->
+      <rect x="0" y="528" width="1400" height="6" fill="#6F5530" opacity="0.4"/>
 
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">iii</span>
-            <span>chapter i</span>
-          </div>
-        </article>
-      </section>
+      <!-- NOTEBOOK on desk (left) -->
+      <g transform="translate(280, 550)">
+        <rect x="0" y="6" width="170" height="190" rx="3" fill="#5D3A1E"/>
+        <rect x="0" y="0" width="170" height="190" rx="3" fill="#A84A3A" stroke="#5D3A1E" stroke-width="3"/>
+        <rect x="0" y="55" width="170" height="10" fill="#E8B540"/>
+        <line x1="14" y1="32" x2="156" y2="32" stroke="#F5E9CC" stroke-width="0.6" opacity="0.5"/>
+        <line x1="14" y1="42" x2="140" y2="42" stroke="#F5E9CC" stroke-width="0.6" opacity="0.5"/>
+        <text x="85" y="100" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="20" fill="#F5E9CC" font-weight="500">Projects</text>
+        <text x="85" y="125" text-anchor="middle" font-family="EB Garamond, serif" font-style="italic" font-size="11" fill="#F5E9CC" opacity="0.85">a notebook</text>
+        <text x="85" y="155" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#E8B540">— v. ii —</text>
+        <!-- bookmark sticking out -->
+        <rect x="130" y="-8" width="14" height="34" fill="#F5E9CC" stroke="#5D3A1E" stroke-width="1"/>
+      </g>
 
-      <<section class="spread" data-page="projects">
-  <article class="page page-left">
-    <button class="page-nav" data-goto="toc">← Contents</button>
+      <!-- TEA CUP -->
+      <g transform="translate(560, 580)">
+        <ellipse cx="60" cy="148" rx="50" ry="6" fill="#5D3A1E" opacity="0.25"/>
+        <ellipse cx="60" cy="68" rx="48" ry="8" fill="#8B4B2F" stroke="#5D3A1E" stroke-width="2"/>
+        <ellipse cx="60" cy="68" rx="42" ry="6" fill="#A84A3A"/>
+        <path d="M 18 70 Q 16 110, 30 140 L 90 140 Q 104 110, 102 70 Z" fill="#F5E9CC" stroke="#5D3A1E" stroke-width="2.5"/>
+        <path d="M 102 85 Q 124 85, 124 105 Q 124 125, 102 125" fill="none" stroke="#5D3A1E" stroke-width="2.5"/>
+        <!-- steam -->
+        <g class="steam">
+          <path d="M 38 38 Q 36 26, 42 16 Q 48 6, 42 -4" stroke="#9F8C5F" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+          <path d="M 60 36 Q 58 24, 64 14 Q 70 4, 64 -6" stroke="#9F8C5F" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+          <path d="M 82 38 Q 80 26, 86 16 Q 92 6, 86 -4" stroke="#9F8C5F" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
+        </g>
+      </g>
 
-    <header class="chapter-header">
-      <div class="chapter-eyebrow">Chapter the second</div>
-      <h2 class="chapter-title">Projects &amp; pet notions</h2>
-      <p class="chapter-subtitle">small expeditions, mostly completed</p>
-    </header>
+      <!-- LAMP (back of desk) -->
+      <g transform="translate(770, 360)">
+        <ellipse cx="80" cy="295" rx="65" ry="8" fill="#5D3A1E" opacity="0.3"/>
+        <!-- glow on wall behind -->
+        <ellipse cx="80" cy="80" rx="120" ry="60" fill="#FAEAC5" opacity="0.45"/>
+        <!-- shade -->
+        <path d="M 30 80 L 130 80 L 110 28 L 50 28 Z" fill="#D4A455" stroke="#5D3A1E" stroke-width="2.5"/>
+        <path d="M 38 80 L 122 80 L 105 33 L 55 33 Z" fill="#F5D88A" opacity="0.7"/>
+        <!-- top vent -->
+        <ellipse cx="80" cy="28" rx="18" ry="3" fill="#5D3A1E"/>
+        <!-- stand -->
+        <line x1="80" y1="80" x2="80" y2="280" stroke="#5D3A1E" stroke-width="4"/>
+        <!-- base -->
+        <ellipse cx="80" cy="285" rx="50" ry="10" fill="#8B6443" stroke="#5D3A1E" stroke-width="2.5"/>
+        <ellipse cx="80" cy="282" rx="40" ry="6" fill="#A87A52"/>
+      </g>
 
-    <div class="projects-list">
+      <!-- PLANT (right side of desk) -->
+      <g transform="translate(1080, 540)">
+        <ellipse cx="60" cy="200" rx="50" ry="6" fill="#5D3A1E" opacity="0.3"/>
+        <!-- pot -->
+        <path d="M 22 130 L 98 130 L 90 195 L 30 195 Z" fill="#A84A3A" stroke="#5D3A1E" stroke-width="2.5"/>
+        <ellipse cx="60" cy="130" rx="38" ry="5" fill="#7A2E1D"/>
+        <!-- soil -->
+        <ellipse cx="60" cy="130" rx="32" ry="3" fill="#3D2512"/>
+        <!-- stems -->
+        <path d="M 60 130 Q 35 95, 28 65 Q 45 70, 58 88 Z" fill="#8FA872" stroke="#5D3A1E" stroke-width="2"/>
+        <path d="M 60 130 Q 85 95, 92 65 Q 75 70, 62 88 Z" fill="#8FA872" stroke="#5D3A1E" stroke-width="2"/>
+        <path d="M 60 130 Q 60 75, 65 30 Q 55 50, 60 88 Z" fill="#A5BC8A" stroke="#5D3A1E" stroke-width="2"/>
+        <!-- accent leaves -->
+        <ellipse cx="40" cy="80" rx="4" ry="9" fill="#6A8056"/>
+        <ellipse cx="80" cy="80" rx="4" ry="9" fill="#6A8056"/>
+        <!-- small flower -->
+        <circle cx="64" cy="32" r="5" fill="#E8B540" stroke="#5D3A1E" stroke-width="1"/>
+      </g>
 
-      <div class="project-card image-left">
-        <div class="project-image-wrap">
-          <img src="images/emrld_medical_medal.svg" alt="EMRLD" class="project-image"/>
+      <!-- LETTER on desk (right) -->
+      <g transform="translate(1230, 660) rotate(-6)">
+        <rect x="0" y="0" width="155" height="100" rx="2" fill="#5D3A1E" opacity="0.25" transform="translate(3, 3)"/>
+        <rect x="0" y="0" width="155" height="100" rx="2" fill="#F5E9CC" stroke="#5D3A1E" stroke-width="2"/>
+        <path d="M 5 8 L 78 60 L 150 8" stroke="#5D3A1E" stroke-width="1.5" fill="none"/>
+        <circle cx="78" cy="62" r="14" fill="#A84A3A" stroke="#5D3A1E" stroke-width="1.5"/>
+        <text x="78" y="68" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="15" fill="#F5E9CC" font-weight="600">S</text>
+      </g>
+
+    </svg>
+
+    <!-- HOT ZONES (transparent buttons over the SVG) -->
+    <button class="hot hot-window" data-key="window" aria-label="Window — career"></button>
+    <button class="hot hot-frame" data-key="frame" aria-label="Photo — about me"></button>
+    <button class="hot hot-shelf" data-key="shelf" aria-label="Bookshelf — writing"></button>
+    <button class="hot hot-notebook" data-key="notebook" aria-label="Notebook — projects"></button>
+    <button class="hot hot-cup" data-key="cup" aria-label="Tea cup — values"></button>
+    <button class="hot hot-lamp" data-key="lamp" aria-label="Lamp — what I'm thinking about"></button>
+    <button class="hot hot-plant" data-key="plant" aria-label="Plant — what I'm growing"></button>
+    <button class="hot hot-letter" data-key="letter" aria-label="Letter — get in touch"></button>
+
+    <!-- HOVER CAPTION -->
+    <div class="caption" id="caption"></div>
+
+    <div class="hint">click any object · esc to close</div>
+
+    <!-- DETAIL PANEL OVERLAY -->
+    <div class="overlay" id="overlay">
+      <div class="panel" id="panel"></div>
+    </div>
+
+    <!-- NOTEBOOK SPREAD OVERLAY -->
+    <div class="notebook-overlay" id="notebook-overlay">
+      <div class="notebook-spread">
+        <button class="notebook-close" id="notebook-close">×</button>
+
+        <!-- Left page: TOC -->
+        <div class="notebook-page notebook-page-left">
+          <div class="panel-eyebrow">the notebook · index</div>
+          <div class="panel-title">Five expeditions</div>
+          <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px;">— mostly completed —</div>
+
+          <ul class="notebook-toc" id="notebook-toc">
+            <li data-id="emrld" class="active">
+              <span class="toc-num">i.</span>
+              <span class="toc-name">EMRLD</span>
+              <span class="toc-meta">PM</span>
+            </li>
+            <li data-id="stride">
+              <span class="toc-num">ii.</span>
+              <span class="toc-name">Stride</span>
+              <span class="toc-meta">founder</span>
+            </li>
+            <li data-id="pawsible">
+              <span class="toc-num">iii.</span>
+              <span class="toc-name">Pawsible</span>
+              <span class="toc-meta">hackathon</span>
+            </li>
+            <li data-id="lift">
+              <span class="toc-num">iv.</span>
+              <span class="toc-name">Multi-motor lift</span>
+              <span class="toc-meta">IEEE</span>
+            </li>
+            <li data-id="syllabit">
+              <span class="toc-num">v.</span>
+              <span class="toc-name">Syllabit</span>
+              <span class="toc-meta">PM hackathon</span>
+            </li>
+          </ul>
         </div>
-        <div class="project-content">
-          <div class="project-role">PM &amp; consultant</div>
-          <h3 class="project-name">EMRLD</h3>
-          <p class="project-blurb">A medical education platform at a fork: build or buy? She weighed five vendors, chose well, and cut projected costs by nearly three-quarters.</p>
-        </div>
+
+        <!-- Right page: project detail -->
+        <div class="notebook-page" id="notebook-detail"></div>
+
       </div>
-
-      <div class="project-card image-right">
-        <div class="project-content">
-          <div class="project-role">Founder · top 30 of 625</div>
-          <h3 class="project-name">Stride</h3>
-          <p class="project-blurb">Students on one side. Freshly-funded startups on the other. She built the bridge — an NLP-driven matcher for jobs and interview prep.</p>
-        </div>
-        <div class="project-image-wrap">
-          <img src="images/stride-on-parchment.svg" alt="Stride" class="project-image"/>
-        </div>
-      </div>
-
-      <div class="project-card image-left">
-        <div class="project-image-wrap">
-          <img src="images/pawsible-dog.svg" alt="Pawsible" class="project-image"/>
-        </div>
-        <div class="project-content">
-          <div class="project-role">Hackathon · 2nd place</div>
-          <h3 class="project-name">Pawsible</h3>
-          <p class="project-blurb">A stray picked up off the street. A shelter, a vet, a unique ID. Then an AI agent quietly matching the animal with the right home.</p>
-        </div>
-      </div>
-
     </div>
 
-    <div class="page-footer">
-      <span>the tales of shriya</span>
-      <span class="page-number">xiv</span>
-      <span>chapter ii</span>
-    </div>
-  </article>
-
-  <article class="page page-right">
-    <div class="projects-list">
-
-      <div class="project-card image-right">
-        <div class="project-content">
-          <div class="project-role">IEEE published</div>
-          <h3 class="project-name">Multi-motor lift</h3>
-          <p class="project-blurb">Four motors, one coordinated lift. Kept in perfect sync across thirty test cycles, trimming 12% off the build cost.</p>
-        </div>
-        <div class="project-image-wrap">
-          <img src="images/lift_system_ship.svg" alt="Multi-motor lift system" class="project-image"/>
-        </div>
-      </div>
-
-      <div class="project-card image-left">
-        <div class="project-image-wrap">
-          <img src="images/syllabit-on-parchment.svg" alt="Syllabit" class="project-image"/>
-        </div>
-        <div class="project-content">
-          <div class="project-role">PM hackathon · 1st place</div>
-          <h3 class="project-name">Syllabit</h3>
-          <p class="project-blurb">University is built around one kind of attention. Syllabit reshapes a syllabus around the way an ADHD mind actually works.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="chapter-nav">
-      <button class="chapter-nav-link" data-goto="about">
-        <span class="chapter-nav-label">Previous</span>
-        ← about the author
-      </button>
-      <button class="chapter-nav-link next" data-goto="career">
-        <span class="chapter-nav-label">Next</span>
-        a winding career →
-      </button>
-    </div>
-
-    <div class="page-footer">
-      <span>the tales of shriya</span>
-      <span class="page-number">xv</span>
-      <span>chapter ii</span>
-    </div>
-  </article>
-</section>
-
-      <section class="spread" data-page="career">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the third</div>
-          <div class="chapter-mark-numeral">III</div>
-          <h2 class="chapter-mark-title">A winding career</h2>
-          <div class="chapter-mark-rule"></div>
-          <p class="chapter-mark-epigraph">"Told roughly in order, with occasional liberties taken."</p>
-          <div class="decoration">
-            <svg width="130" height="100" viewBox="0 0 130 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 20 Q 35 20, 40 50 T 70 70 T 120 85" stroke="#7A2E1D" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
-              <circle cx="10" cy="20" r="3" fill="#854F0B"/>
-              <circle cx="40" cy="50" r="2.5" fill="#854F0B"/>
-              <circle cx="70" cy="70" r="2.5" fill="#854F0B"/>
-              <circle cx="120" cy="85" r="3" fill="#7A2E1D"/>
-            </svg>
-          </div>
-        </article>
-
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the third</div>
-            <h2 class="chapter-title">A winding career</h2>
-            <p class="chapter-subtitle">a roundabout, in roughly chronological order</p>
-          </header>
-
-          <div>
-            <div class="timeline-entry">
-              <div class="timeline-marker">chapter the first</div>
-              <div>
-                <div class="timeline-title">The undergraduate years</div>
-                <p class="timeline-description">A bachelor's in electrical engineering, spent studying electrons and occasionally surprising them. The beginnings of a suspicion that the best engineering problems are usually people problems.</p>
-              </div>
-            </div>
-
-            <div class="timeline-entry">
-              <div class="timeline-marker">chapter the second</div>
-              <div>
-                <div class="timeline-title">The first proper post</div>
-                <p class="timeline-description">An early role in engineering. Brief, instructive, and full of polite meetings about impolite problems.</p>
-              </div>
-            </div>
-
-            <div class="timeline-entry">
-              <div class="timeline-marker">chapter the third</div>
-              <div>
-                <div class="timeline-title">A deliberate turn</div>
-                <p class="timeline-description">A pivot from engineering toward product, undertaken through the DAPL program. Build-vs-buy became a more interesting question than build-vs-also-build.</p>
-              </div>
-            </div>
-
-            <div class="timeline-entry">
-              <div class="timeline-marker">chapter the fourth</div>
-              <div>
-                <div class="timeline-title">Teaching, alongside learning</div>
-                <p class="timeline-description">Preceptor and facilitator work for seminars on innovation and organizational culture. Reading closely, and watching twenty people argue about the readings politely.</p>
-              </div>
-            </div>
-
-            <div class="timeline-entry">
-              <div class="timeline-marker">the latest chapter</div>
-              <div>
-                <div class="timeline-title">In progress</div>
-                <p class="timeline-description">Currently seeking a product or product-marketing role where an engineer's instincts are still welcome. Watch this page.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="chapter-nav-link" data-goto="projects">
-              <span class="chapter-nav-label">Previous</span>
-              ← projects &amp; pet notions
-            </button>
-            <button class="chapter-nav-link next" data-goto="writing">
-              <span class="chapter-nav-label">Next</span>
-              musings &amp; marginalia →
-            </button>
-          </div>
-
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">xxxii</span>
-            <span>chapter iii</span>
-          </div>
-        </article>
-      </section>
-
-      <section class="spread" data-page="writing">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the fourth</div>
-          <div class="chapter-mark-numeral">IV</div>
-          <h2 class="chapter-mark-title">Musings &amp; marginalia</h2>
-          <div class="chapter-mark-rule"></div>
-          <p class="chapter-mark-epigraph">"One writes, it is said, in order to find out what one thinks."</p>
-          <div class="decoration" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 96px; color: #854F0B; line-height: 1; opacity: 0.5;">"</div>
-        </article>
-
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the fourth</div>
-            <h2 class="chapter-title">Musings &amp; marginalia</h2>
-            <p class="chapter-subtitle">short essays, scribbled in the margins</p>
-          </header>
-
-          <div>
-            <div class="writing-entry">
-              <div class="writing-date">Spring 2026</div>
-              <h3 class="writing-title">On build-vs-buy, and other quiet questions</h3>
-              <p class="writing-excerpt">"The most interesting product decisions are rarely the ones that make it into the slide deck. They live in the hallways, in the half-sentence asides…"</p>
-            </div>
-
-            <div class="writing-entry">
-              <div class="writing-date">Winter 2025</div>
-              <h3 class="writing-title">What the engineer knows about products</h3>
-              <p class="writing-excerpt">"An engineer learns, early on, that the thing you wanted to build and the thing you actually built are almost never the same thing. This turns out to be a useful thing to know…"</p>
-            </div>
-
-            <div class="writing-entry">
-              <div class="writing-date">Autumn 2025</div>
-              <h3 class="writing-title">Notes from the iconoclast seminar</h3>
-              <p class="writing-excerpt">"What Berns calls an iconoclast, most teams just call a nuisance. The distinction, it turns out, is mostly about timing…"</p>
-            </div>
-
-            <div class="writing-entry">
-              <div class="writing-date">Summer 2025</div>
-              <h3 class="writing-title">The honest PM's tradeoff journal</h3>
-              <p class="writing-excerpt">"A small practice: keep a list of the things you chose not to do this week, and why. Read it back on Friday. Try not to flinch…"</p>
-            </div>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="chapter-nav-link" data-goto="career">
-              <span class="chapter-nav-label">Previous</span>
-              ← a winding career
-            </button>
-            <button class="chapter-nav-link next" data-goto="teaching">
-              <span class="chapter-nav-label">Next</span>
-              talks &amp; teachings →
-            </button>
-          </div>
-
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">lviii</span>
-            <span>chapter iv</span>
-          </div>
-        </article>
-      </section>
-
-      <section class="spread" data-page="teaching">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the fifth</div>
-          <div class="chapter-mark-numeral">V</div>
-          <h2 class="chapter-mark-title">Talks, teachings &amp; tea</h2>
-          <div class="chapter-mark-rule"></div>
-          <p class="chapter-mark-epigraph">"Of all the ways to discover what one does not know, teaching is the most reliable."</p>
-          <div class="decoration">
-            <svg width="90" height="70" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="5" y="5" width="80" height="55" rx="2" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
-              <line x1="15" y1="20" x2="45" y2="20" stroke="#854F0B" stroke-width="1"/>
-              <line x1="15" y1="30" x2="65" y2="30" stroke="#854F0B" stroke-width="1"/>
-              <line x1="15" y1="40" x2="55" y2="40" stroke="#854F0B" stroke-width="1"/>
-              <line x1="15" y1="50" x2="40" y2="50" stroke="#854F0B" stroke-width="1"/>
-            </svg>
-          </div>
-        </article>
-
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the fifth</div>
-            <h2 class="chapter-title">Talks, teachings &amp; tea</h2>
-            <p class="chapter-subtitle">a brief account of seminars held</p>
-          </header>
-
-          <div class="chapter-body" style="margin-bottom: 24px;">
-            <p class="drop-cap">Teaching has always struck our author as the most reliable way to find out whether she actually understands something. A short record follows.</p>
-          </div>
-
-          <div>
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">i.</span>
-                <span class="tale-title">Iconoclasts &amp; innovation</span>
-              </div>
-              <p class="tale-description">A seminar session drawing on Gregory Berns's <em>Iconoclast</em>, with structured discussion prompts and a handful of gently-contentious questions.</p>
-              <p class="tale-tag">— seminar · facilitation · pdf</p>
-            </div>
-
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">ii.</span>
-                <span class="tale-title">Organizational culture</span>
-              </div>
-              <p class="tale-description">A session built on Edgar Schein's <em>Organizational Culture and Leadership</em>. Cold-call prompts, a facilitation protocol, and notes on managing silences.</p>
-              <p class="tale-tag">— seminar · schein · facilitation</p>
-            </div>
-
-            <div class="tale-entry">
-              <div class="tale-header">
-                <span class="tale-number">iii.</span>
-                <span class="tale-title">Interview preparation, by request</span>
-              </div>
-              <p class="tale-description">Occasional one-on-one preparation for friends heading into product, engineering, or editorial interviews. STAR stories and the usual.</p>
-              <p class="tale-tag">— coaching · on request</p>
-            </div>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="chapter-nav-link" data-goto="writing">
-              <span class="chapter-nav-label">Previous</span>
-              ← musings &amp; marginalia
-            </button>
-            <button class="chapter-nav-link next" data-goto="letter">
-              <span class="chapter-nav-label">Next</span>
-              a letter →
-            </button>
-          </div>
-
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">lxxi</span>
-            <span>chapter v</span>
-          </div>
-        </article>
-      </section>
-
-      <section class="spread" data-page="letter">
-        <article class="page page-left chapter-mark-page">
-          <div class="chapter-mark-eyebrow">Chapter the sixth</div>
-          <div class="chapter-mark-numeral">VI</div>
-          <h2 class="chapter-mark-title">A letter to the reader</h2>
-          <div class="chapter-mark-rule"></div>
-          <p class="chapter-mark-epigraph">"A note from the author, in closing."</p>
-          <div class="decoration">
-            <svg width="110" height="80" viewBox="0 0 110 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="5" y="15" width="100" height="60" rx="1" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
-              <path d="M5 15 L55 50 L105 15" stroke="#7A2E1D" stroke-width="1.5" fill="none"/>
-              <circle cx="55" cy="50" r="10" fill="#7A2E1D" opacity="0.85"/>
-              <text x="55" y="55" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="#F3E9D0" font-weight="600">S</text>
-            </svg>
-          </div>
-        </article>
-
-        <article class="page page-right">
-          <button class="page-nav" data-goto="toc">← Contents</button>
-          <header class="chapter-header">
-            <div class="chapter-eyebrow">Chapter the sixth</div>
-            <h2 class="chapter-title">A letter to the reader</h2>
-            <p class="chapter-subtitle">or: how to find the author, should you wish to</p>
-          </header>
-
-          <div class="letter">
-            <p class="letter-salutation">Dear Reader,</p>
-
-            <p>If you have turned every page and found something worth keeping — a project worth discussing, a piece of writing worth quarrelling with, a role you think might suit — I would be glad to hear from you.</p>
-
-            <p>Correspondence of any kind is welcome. I can be reached by the usual means:</p>
-
-            <div class="correspondence">
-              <div class="correspondence-item">
-                <span class="correspondence-label">by electronic post —</span>
-                <span class="correspondence-value"><a href="mailto:hello@example.com">hello@example.com</a></span>
-              </div>
-              <div class="correspondence-item">
-                <span class="correspondence-label">by professional graph —</span>
-                <span class="correspondence-value"><a href="#">linkedin.com/in/shriya</a></span>
-              </div>
-              <div class="correspondence-item">
-                <span class="correspondence-label">by published code —</span>
-                <span class="correspondence-value"><a href="#">github.com/shriyadesai</a></span>
-              </div>
-              <div class="correspondence-item">
-                <span class="correspondence-label">by occasional writing —</span>
-                <span class="correspondence-value"><a href="#">substack.com/@shriya</a></span>
-              </div>
-            </div>
-
-            <p class="letter-sign-off">Yours, in pursuit of good questions,</p>
-            <p class="signature">Shriya</p>
-          </div>
-
-          <div class="chapter-nav">
-            <button class="chapter-nav-link" data-goto="teaching">
-              <span class="chapter-nav-label">Previous</span>
-              ← talks &amp; teachings
-            </button>
-            <button class="chapter-nav-link next" data-goto="toc">
-              <span class="chapter-nav-label">Return</span>
-              to the beginning →
-            </button>
-          </div>
-
-          <div class="page-footer">
-            <span>the tales of shriya</span>
-            <span class="page-number">lxxxix</span>
-            <span>chapter vi · fin</span>
-          </div>
-        </article>
-      </section>
-
-    </div>
-
-    <p class="book-caption">
-      Click a chapter from the contents, or use <kbd>←</kbd> <kbd>→</kbd> to turn pages
-    </p>
   </div>
 
   <script>
-    function goToPage(id) {
-      const current = document.querySelector('.spread.active');
-      const next = document.querySelector('.spread[data-page="' + id + '"]');
-      if (!current || !next || current === next) return;
+    // Caption text on hover
+    const captions = {
+      window: 'the window · career',
+      frame: 'the photograph · about me',
+      shelf: 'the bookshelf · writing',
+      notebook: 'the notebook · projects',
+      cup: 'the tea cup · values',
+      lamp: 'the lamp · what I\'m reading',
+      plant: 'the plant · what I\'m growing',
+      letter: 'the letter · get in touch'
+    };
 
-      current.classList.add('flipping-out');
-      current.classList.remove('active');
+    // Detail panel content (everything except notebook)
+    const panels = {
+      window: {
+        kind: 'career',
+        eyebrow: 'looking out',
+        title: 'A winding career',
+        body: `
+          <div class="career-step">
+            <div class="when">2018–2022</div>
+            <div>
+              <div class="what">Electrical engineering</div>
+              <div class="desc">A bachelor's degree, spent studying electrons and occasionally surprising them.</div>
+            </div>
+          </div>
+          <div class="career-step">
+            <div class="when">2022–2023</div>
+            <div>
+              <div class="what">First post · engineering</div>
+              <div class="desc">Brief, instructive, and full of polite meetings about impolite problems.</div>
+            </div>
+          </div>
+          <div class="career-step">
+            <div class="when">2023–2025</div>
+            <div>
+              <div class="what">A deliberate turn · DAPL</div>
+              <div class="desc">Pivot from engineering to product. Build-vs-buy became a more interesting question than build-vs-also-build.</div>
+            </div>
+          </div>
+          <div class="career-step">
+            <div class="when">2025–now</div>
+            <div>
+              <div class="what">Teaching, alongside</div>
+              <div class="desc">Preceptor for seminars on innovation and culture, while looking for the next role.</div>
+            </div>
+          </div>
+        `
+      },
+      frame: {
+        kind: 'frame',
+        body: `
+          <div class="polaroid-photo">— a portrait —</div>
+          <div class="polaroid-cap">Hi, I'm Shriya.</div>
+          <p class="panel-body" style="margin-top: 18px; font-size: 15px;">Trained as an electrical engineer; turned product because the most interesting problems turned out to be people problems. I read more than I should, ship more than I admit, and take my tea with milk.</p>
+        `
+      },
+      shelf: {
+        kind: 'shelf',
+        eyebrow: 'on the shelf',
+        title: 'Writing',
+        body: `
+          <p class="panel-body" style="margin-bottom: 18px; font-style: italic; color: var(--ink-soft);">Short essays on product, tradeoffs, and small decisions.</p>
+          <div class="writing-item">
+            <div class="date">Spring 2026</div>
+            <div class="name">On build-vs-buy, and other quiet questions</div>
+            <div class="ex">"The most interesting product decisions are rarely the ones that make the slide deck…"</div>
+          </div>
+          <div class="writing-item">
+            <div class="date">Winter 2025</div>
+            <div class="name">What the engineer knows about products</div>
+            <div class="ex">"The thing you wanted to build and the thing you actually built are almost never the same…"</div>
+          </div>
+          <div class="writing-item">
+            <div class="date">Autumn 2025</div>
+            <div class="name">Notes from the iconoclast seminar</div>
+            <div class="ex">"What Berns calls an iconoclast, most teams just call a nuisance…"</div>
+          </div>
+        `
+      },
+      cup: {
+        kind: 'about',
+        eyebrow: 'still warm',
+        title: 'Values',
+        body: `
+          <p class="panel-body">A few things I try to hold to:</p>
+          <ul class="values-list">
+            <li>Think out loud, and check the work.</li>
+            <li>Kill features I don't believe in, fast.</li>
+            <li>Take teaching seriously — it's the most reliable test of whether I understand a thing.</li>
+            <li>Warmth and rigor are not opposites.</li>
+            <li>Stay curious about people first, products second.</li>
+          </ul>
+        `
+      },
+      lamp: {
+        kind: 'values',
+        eyebrow: 'pooled in light',
+        title: 'On the desk now',
+        body: `
+          <p class="panel-body" style="font-style: italic; color: var(--ink-soft); margin-bottom: 18px;">A few things keeping me busy this season.</p>
+          <ul class="values-list">
+            <li><em>Reading</em> — Schein on organizational culture; Berns on iconoclasts.</li>
+            <li><em>Teaching</em> — preceptor for two undergraduate seminars.</li>
+            <li><em>Building</em> — a multi-motor lift system, in the lab; a small product on the side.</li>
+            <li><em>Writing</em> — a piece on what engineers know about products.</li>
+            <li><em>Looking for</em> — a product or product-marketing role where an engineer's instincts are still welcome.</li>
+          </ul>
+        `
+      },
+      plant: {
+        kind: 'writing',
+        eyebrow: 'growing things',
+        title: 'In progress',
+        body: `
+          <p class="panel-body" style="font-style: italic;">Notes on what's being grown — slowly.</p>
+          <ul class="values-list" style="margin-top: 16px;">
+            <li>A long essay on tradeoffs in product work, half-drafted.</li>
+            <li>A side project on retrieval tools, in nights and weekends.</li>
+            <li>Volunteer grant research for a community theatre in Lebanon, NH.</li>
+            <li>A small archive of teaching notes — handouts I keep refining.</li>
+          </ul>
+        `
+      },
+      letter: {
+        kind: 'letter',
+        eyebrow: 'for you',
+        title: 'A letter',
+        body: `
+          <p class="panel-body">Dear reader,</p>
+          <p class="panel-body">If anything here resonated — a project worth discussing, a piece of writing worth quarrelling with, a role you think might suit — I would be glad to hear from you.</p>
+          <div class="contact-list">
+            <div><span class="lbl">by post —</span><a href="mailto:hello@example.com">hello@example.com</a></div>
+            <div><span class="lbl">professionally —</span><a href="#">linkedin.com/in/shriya</a></div>
+            <div><span class="lbl">in code —</span><a href="#">github.com/shriyadesai</a></div>
+            <div><span class="lbl">in writing —</span><a href="#">substack.com/@shriya</a></div>
+          </div>
+          <p class="panel-body" style="margin-top: 22px; font-style: italic;">Yours,</p>
+          <div class="signature">Shriya</div>
+        `
+      }
+    };
 
-      setTimeout(function () {
-        current.classList.remove('flipping-out');
-        next.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 500);
-    }
+    // Notebook project content
+    const projects = {
+      emrld: {
+        eyebrow: 'PM & student consultant',
+        title: 'EMRLD',
+        role: 'A medical education platform · build vs. buy',
+        body: `
+          <p>The platform was at a fork: build the next set of features in-house, or buy from one of several vendors. Neither answer was obviously right.</p>
+          <p>I built a weighted cost-capability framework, ran it across five vendors, and made the case for a hybrid approach — buy the core, build the differentiating layer. The decision cut projected development costs by 66 to 72 percent and kept the platform extensible for whatever came next.</p>
+          <p style="font-style: italic; color: var(--ink-soft); font-size: 14px;">— spring 2025 · medical edtech</p>
+        `
+      },
+      stride: {
+        eyebrow: 'founder & PM · top 30 of 625',
+        title: 'Stride',
+        role: 'Students meet startups',
+        body: `
+          <p>Students on one side. Recently funded startups on the other. No good way to find each other in the noise.</p>
+          <p>I built the bridge — an NLP-driven matching engine for jobs and interview prep, validated through a thousand user interviews. We were selected top 30 of 625 teams nationally.</p>
+          <p style="font-style: italic; color: var(--ink-soft); font-size: 14px;">— 2024 · careers · NLP</p>
+        `
+      },
+      pawsible: {
+        eyebrow: 'innovation hackathon · 2nd place',
+        title: 'Pawsible',
+        role: 'AI-driven adoption for stray animals',
+        body: `
+          <p>A stray, picked up off the street. A shelter, a vet visit, a unique ID. Then an AI agent quietly matching the animal with the right home — for keeps.</p>
+          <p>I defined end-to-end user journeys across three personas — adopter, shelter, volunteer — and the intelligent matching flows that connected them. Took second at the innovation hackathon.</p>
+          <p style="font-style: italic; color: var(--ink-soft); font-size: 14px;">— 2024 · social impact · AI</p>
+        `
+      },
+      lift: {
+        eyebrow: 'IEEE published',
+        title: 'Multi-motor lift system',
+        role: 'Synchronous coordination across four motors',
+        body: `
+          <p>Four motors. One coordinated lift. The architecture had to keep them in perfect sync — no drift, no lag, no over-correction.</p>
+          <p>Validated across thirty-plus test cycles, the system held tolerance and shaved 12 percent off the build cost through a leaner architecture. Published with IEEE.</p>
+          <p style="font-style: italic; color: var(--ink-soft); font-size: 14px;">— 2023 · hardware · published</p>
+        `
+      },
+      syllabit: {
+        eyebrow: 'PM hackathon · 1st place',
+        title: 'Syllabit',
+        role: 'Personalized learning for ADHD students',
+        body: `
+          <p>University is built around one kind of attention. Syllabit is for everyone else — an AI-tuned platform that reshapes a syllabus around the way an ADHD mind actually works.</p>
+          <p>Paced. Navigable. Actually doable. Took first place at the product management hackathon.</p>
+          <p style="font-style: italic; color: var(--ink-soft); font-size: 14px;">— 2024 · edtech · accessibility</p>
+        `
+      }
+    };
 
-    document.querySelectorAll('[data-goto]').forEach(function (el) {
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        goToPage(el.getAttribute('data-goto'));
+    // Wire up captions
+    const caption = document.getElementById('caption');
+    document.querySelectorAll('.hot').forEach(function (btn) {
+      const key = btn.dataset.key;
+      btn.addEventListener('mouseenter', function () {
+        caption.textContent = captions[key];
+        caption.classList.add('visible');
+      });
+      btn.addEventListener('mouseleave', function () {
+        caption.classList.remove('visible');
       });
     });
 
-    const order = ['toc', 'about', 'projects', 'career', 'writing', 'teaching', 'letter'];
+    // Click handlers
+    const overlay = document.getElementById('overlay');
+    const panel = document.getElementById('panel');
+    const notebookOverlay = document.getElementById('notebook-overlay');
+    const notebookDetail = document.getElementById('notebook-detail');
+
+    function renderProject(id) {
+      const p = projects[id];
+      notebookDetail.innerHTML =
+        '<div class="project-detail-eyebrow">' + p.eyebrow + '</div>' +
+        '<div class="project-detail-title">' + p.title + '</div>' +
+        '<div class="project-detail-role">' + p.role + '</div>' +
+        '<div class="project-detail-body">' + p.body + '</div>';
+    }
+
+    function renderPanel(key) {
+      const p = panels[key];
+      const cls = 'panel-' + p.kind;
+      let html = '<button class="close-btn" id="close-btn">×</button>';
+      html += '<div class="' + cls + '">';
+      if (p.eyebrow) html += '<div class="panel-eyebrow">' + p.eyebrow + '</div>';
+      if (p.title) html += '<div class="panel-title">' + p.title + '</div>';
+      html += '<div class="panel-body">' + p.body + '</div>';
+      html += '</div>';
+      panel.innerHTML = html;
+      document.getElementById('close-btn').addEventListener('click', closePanel);
+    }
+
+    document.querySelectorAll('.hot').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const key = btn.dataset.key;
+        if (key === 'notebook') {
+          renderProject('emrld');
+          notebookOverlay.classList.add('open');
+        } else {
+          renderPanel(key);
+          overlay.classList.add('open');
+        }
+      });
+    });
+
+    // TOC clicks
+    document.querySelectorAll('#notebook-toc li').forEach(function (li) {
+      li.addEventListener('click', function () {
+        document.querySelectorAll('#notebook-toc li').forEach(function (x) { x.classList.remove('active'); });
+        li.classList.add('active');
+        renderProject(li.dataset.id);
+      });
+    });
+
+    function closePanel() { overlay.classList.remove('open'); }
+    function closeNotebook() { notebookOverlay.classList.remove('open'); }
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closePanel();
+    });
+    notebookOverlay.addEventListener('click', function (e) {
+      if (e.target === notebookOverlay) closeNotebook();
+    });
+    document.getElementById('notebook-close').addEventListener('click', closeNotebook);
+
     document.addEventListener('keydown', function (e) {
-      const active = document.querySelector('.spread.active');
-      if (!active) return;
-      const idx = order.indexOf(active.getAttribute('data-page'));
-      if (e.key === 'ArrowRight' && idx < order.length - 1) goToPage(order[idx + 1]);
-      if (e.key === 'ArrowLeft' && idx > 0) goToPage(order[idx - 1]);
+      if (e.key === 'Escape') {
+        closePanel();
+        closeNotebook();
+      }
     });
   </script>
+
 </body>
 </html>
